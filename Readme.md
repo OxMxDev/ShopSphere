@@ -61,10 +61,10 @@ cd EcommerceWebsite
 npm install
 
 # Create a .env file and configure environment variables
-# Example:
-# MONGODB_URI=mongodb+srv://...
-# JWT_SECRET=your_secret
-# CLOUDINARY_URL=...
+Example:
+MONGODB_URI=mongodb+srv://...
+JWT_SECRET=your_secret
+CLOUDINARY_URL=...
 
 # Run the server (development)
 npm run dev
