@@ -5,6 +5,7 @@ import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import {User} from "../models/user.model.js"
 import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
+import { DeleteFile } from "../utils/cloudinary.js"
 
 
 function extractPublicId(cloudinaryUrl) {
