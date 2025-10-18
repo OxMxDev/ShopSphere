@@ -3,8 +3,6 @@
 A full-stack e-commerce web application built using Node.js, Express, MongoDB, and Mongoose, with features like authentication, product management, and user profiles.
 This README documents the project setup, folder structure, APIs, and development workflow.
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
 🚀 Features
 
 🧾 User authentication (JWT-based login, signup, refresh tokens)
@@ -62,10 +60,10 @@ cd EcommerceWebsite
 npm install
 
 # Create a .env file and configure environment variables
-# Example:
-# MONGODB_URI=mongodb+srv://...
-# JWT_SECRET=your_secret
-# CLOUDINARY_URL=...
+Example:
+MONGODB_URI=mongodb+srv://...
+JWT_SECRET=your_secret
+CLOUDINARY_URL=...
 
 # Run the server (development)
 npm run dev
