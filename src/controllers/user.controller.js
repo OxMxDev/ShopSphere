@@ -6,6 +6,15 @@ import {User} from "../models/user.model.js"
 import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
 
+
+function extractPublicId(cloudinaryUrl) {
+	const parts = cloudinaryUrl.split("/");
+	const uploadIndex = parts.indexOf("upload");
+	const publicIdWithExtension = parts.slice(uploadIndex + 2).join("/");
+	const publicId = publicIdWithExtension.split(".")[0];
+	return publicId;
+}
+
 const generateAccessAndRefeshTokens = async(userId) => {
     try{
         const user = await User.findById(userId)
@@ -247,4 +256,43 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
         throw new ApiError(401,error?.message || "Invalid refresh Token")
     }
 })
-export {registerUser,loginUser,logoutUser,getCurrentUser,changeCurrentPassword,updateAccountDetails,refreshAccessToken} 
+
+const updateUserAvatar = asyncHandler(async(req,res)=>{
+    const avatarLocalPath = req.file?.path
+    if(!avatarLocalPath){
+        throw new ApiError(400,"Avatar field is missing")
+    }
+
+    const oldUser = await User.findById(req.user._id)
+    const oldAvatarUrl = oldUser?.avatar
+
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
+
+    if(!avatar.url){
+        throw new ApiError(500,"Something went wrong while updating avatar")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set:{
+                avatar:avatar.url
+            }
+        },{new:true}
+    ).select("-password")
+
+    if (oldAvatarUrl) {
+				try {
+					const publicId = avatar.public_id || extractPublicId(oldAvatarUrl);
+					await DeleteFile(publicId);
+					console.log("Old avatar deleted from Cloudinary");
+				} catch (error) {
+					console.error("Failed to delete old avatar:", error.message);
+				}
+			}
+
+    return res
+	.status(200)
+	.json(new ApiResponse(200, user, "User avatar updated successfully"));
+})
+export {registerUser,loginUser,logoutUser,getCurrentUser,changeCurrentPassword,updateAccountDetails,refreshAccessToken,updateUserAvatar} 
