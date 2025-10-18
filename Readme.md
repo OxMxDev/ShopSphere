@@ -3,7 +3,6 @@
 A full-stack e-commerce web application built using Node.js, Express, MongoDB, and Mongoose, with features like authentication, product management, and user profiles.
 This README documents the project setup, folder structure, APIs, and development workflow.
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 🚀 Features
 
@@ -21,8 +20,6 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 🧠 Mongoose models with pre/post middleware
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
 🧩 Tech Stack
 Category	                    Technologies
 Backend	                        Node.js, Express.js
@@ -31,8 +28,6 @@ Authentication	                JWT, bcrypt
 Cloud	                        Cloudinary
 Testing	                        Postman
 Environment Management	        dotenv
-
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 🗂️ Folder Structure
 
@@ -54,8 +49,6 @@ EcommerceWebsite/
 ├── package.json
 ├── README.md
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
 ⚙️ Installation & Setup
 
 # Clone the repository
@@ -76,16 +69,11 @@ npm install
 # Run the server (development)
 npm run dev
 
-
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
 🧰 Scripts
 
 Command             Description
 
 npm run dev         Start server with nodemon
-
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 🧑‍💻 Developer Notes
 
