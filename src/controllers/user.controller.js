@@ -296,4 +296,13 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
 	.status(200)
 	.json(new ApiResponse(200, user, "User avatar updated successfully"));
 })
-export {registerUser,loginUser,logoutUser,getCurrentUser,changeCurrentPassword,updateAccountDetails,refreshAccessToken,updateUserAvatar} 
+
+export {registerUser,
+        loginUser,
+        logoutUser,
+        getCurrentUser,
+        changeCurrentPassword,
+        updateAccountDetails,
+        refreshAccessToken,
+        updateUserAvatar
+    } 
