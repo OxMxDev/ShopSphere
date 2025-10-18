@@ -54,19 +54,20 @@ const registerUser = asyncHandler(async(req,res)=>{
 		}
 
     const avatar = await uploadOnCloudinary(avatarLocalPath)
-        console.log(avatar)
+    console.log(avatar)
     if(!avatar?.url){
         throw new ApiError(500, "Failed to upload avatar to cloud storage");
     }
 
+
     const user = await User.create({
-        name,
-        email,
-        password,
-        phone,
-        address,
-        avatar:avatar.url,
-    })
+			name,
+			avatar: avatar.url,
+			email,
+			password,
+			phone,
+			address,
+		});
 
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
 
@@ -184,4 +185,29 @@ const changeCurrentPassword = asyncHandler(async(req,res)=>{
     )
 })
 
-export {registerUser,loginUser,logoutUser,getCurrentUser,changeCurrentPassword} 
+const updateAccountDetails = asyncHandler(async(req,res)=>{
+    const {name,email,address,phone} = req.body
+
+    if(!name || !email || !address || !phone){
+        throw new ApiError(401,"All fields are required")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set:{
+                name,
+                email,
+                address,
+                phone
+            }
+        },{new:true}
+    ).select("-password")
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,user,"User details updated successfully")
+    )
+})
+export {registerUser,loginUser,logoutUser,getCurrentUser,changeCurrentPassword,updateAccountDetails} 
