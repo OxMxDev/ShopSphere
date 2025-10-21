@@ -73,9 +73,63 @@ const getProductById = asyncHandler(async(req,res)=>{
     .json(new ApiResponse(200,product,"Product fetched successfully"))
 })
 
+const updateProduct = asyncHandler(async(req,res)=>{
+    const {id} = req.params
+    const {price,stock} = req.body
+
+    if(!id){
+        throw new ApiError(400,"Product Id is required")
+    }
+
+    if(!price && !stock){
+        throw new ApiError(400,"No fields to update")
+    }
+    const updatedFields = {}
+    if(price !== undefined){
+        updatedFields.price = price
+    }
+    if(stock !== undefined){
+        updatedFields.stock = stock
+    }
+    const updateProduct = await Product.findByIdAndUpdate(
+        id,
+        {
+            $set:updatedFields,
+        },
+        {new:true}
+    )
+    if(!updateProduct){
+        throw new ApiError(400,"Product not found")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200,updateProduct,"Product updated successfully"))
+})
+
+const deleteProduct = asyncHandler(async(req,res)=>{
+    const {id} = req.params
+    const product = await Product.findById(id)
+    if(!product){
+        throw new ApiError(404,"Product not found")
+    }
+    if(product.images){
+        const parts = product.images.split('/')
+        const fileName = parts[parts.length - 1]
+        const publicId = fileName.split(".")[0]
+
+        await DeleteFile(publicId)
+    }
+    await Product.findByIdAndDelete(id)
+    return res
+    .status(200)
+    .json(new ApiResponse(200,{},"Product deleted successfully"))
+})
 export
 {
     createProduct,
     getAllProducts,
-    getProductById
+    getProductById,
+    updateProduct,
+    deleteProduct
 }
