@@ -47,7 +47,19 @@ const createProduct = asyncHandler(async(req,res)=>{
     .json(new ApiResponse(201,createdProduct,"Product created successfully"))
 })
 
+const getAllProducts = asyncHandler(async(req,res)=>{
+    const products = await Product.find()
+
+    if(!products || products.length === 0){
+        throw new Error(404,"No products found")
+    }
+    return res
+    .status(200)
+    .json(new ApiResponse(200,products,"Products fetched successfully"))
+})
+
 export
 {
-    createProduct
+    createProduct,
+    getAllProducts
 }
