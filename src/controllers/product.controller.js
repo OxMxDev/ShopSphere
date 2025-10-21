@@ -48,14 +48,19 @@ const createProduct = asyncHandler(async(req,res)=>{
 })
 
 const getAllProducts = asyncHandler(async(req,res)=>{
-    const products = await Product.find()
-
-    if(!products || products.length === 0){
-        throw new Error(404,"No products found")
-    }
+    const {keyword,category,brand,minPrice,maxPrice,page = 1,limit = 10} = req.query
+    const query = {}
+    if(keyword) query.name = {$regex:keyword,$options:"i"};
+    if(category) query.category = category
+    if(brand) query.brand = brand
+    if(minPrice || maxPrice) query.price = {$gte:minPrice || 0,$lte:maxPrice||999999}
+    const products = await Product.find(query)
+        .skip((page-1)*limit)
+        .limit(Number(limit))
+        const total = await Product.countDocuments(query)
     return res
     .status(200)
-    .json(new ApiResponse(200,products,"Products fetched successfully"))
+    .json(new ApiResponse(200,{products,total},"Products fetched successfully"))
 })
 
 const getProductById = asyncHandler(async(req,res)=>{
@@ -125,6 +130,7 @@ const deleteProduct = asyncHandler(async(req,res)=>{
     .status(200)
     .json(new ApiResponse(200,{},"Product deleted successfully"))
 })
+
 export
 {
     createProduct,
