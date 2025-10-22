@@ -26,10 +26,12 @@ const productSchema = new Schema(
 			required: true,
 			default: 0,
 		},
-		images: {
-			type: String,
-			required: true,
-		},
+		images:[
+			{
+				type:String,
+				required:true
+			}
+		],
 		ratings: {
 			type: Number,
 			default: 0,
@@ -37,6 +39,23 @@ const productSchema = new Schema(
 		numReviews: {
 			type: Number,
 			default: 0,
+		},
+		sku: {
+			type: String,
+			unique: true,
+		},
+		discount: {
+			type: Number,
+			default: 0,
+		},
+		attributes: [{
+			key: String,
+			value: String,
+		}],
+		tags: [String],
+		isActive: {
+			type: Boolean,
+			default: true,
 		},
 	},
 	{ timestamps: true }
