@@ -32,7 +32,7 @@ const generateAccessAndRefeshTokens = async(userId) => {
 }
 
 const registerUser = asyncHandler(async(req,res)=>{
-    const { name, email, password, address, phone } = req.body;
+    const { name, email, password, address, phone, role, adminKey } = req.body;
 
     if([name,email,password,address,phone].some((field)=>field?.trim() === "")){
         throw new ApiError(400,"All fields are required")
@@ -69,6 +69,11 @@ const registerUser = asyncHandler(async(req,res)=>{
         throw new ApiError(500, "Failed to upload avatar to cloud storage");
     }
 
+    // Check if user wants to register as admin
+    let userRole = "user";
+    if(role === "admin" && adminKey === process.env.ADMIN_REGISTRATION_KEY){
+        userRole = "admin";
+    }
 
     const user = await User.create({
 			name,
@@ -77,6 +82,7 @@ const registerUser = asyncHandler(async(req,res)=>{
 			password,
 			phone,
 			address,
+			role: userRole,
 		});
 
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
@@ -293,17 +299,136 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
 			}
 
     return res
-	.status(200)
-	.json(new ApiResponse(200, user, "User avatar updated successfully"));
+ .status(200)
+ .json(new ApiResponse(200, user, "User avatar updated successfully"));
+})
+
+// Admin specific functions
+
+// Promote a user to admin (admin only)
+const promoteToAdmin = asyncHandler(async(req,res)=>{
+    const {userId} = req.params
+    
+    if(!userId){
+        throw new ApiError(400,"User ID is required")
+    }
+    
+    const user = await User.findById(userId)
+    if(!user){
+        throw new ApiError(404,"User not found")
+    }
+    
+    if(user.role === 'admin'){
+        throw new ApiError(400,"User is already an admin")
+    }
+    
+    user.role = 'admin'
+    await user.save()
+    
+    return res
+    .status(200)
+    .json(new ApiResponse(200,user,"User promoted to admin successfully"))
+})
+
+// Get all users (admin only)
+const getAllUsers = asyncHandler(async(req,res)=>{
+    const {page = 1, limit = 10, role} = req.query
+    
+    const query = {}
+    if(role) query.role = role
+    
+    const users = await User.find(query)
+        .select("-password -refreshToken")
+        .skip((page-1)*limit)
+        .limit(Number(limit))
+        .sort({createdAt: -1})
+    
+    const total = await User.countDocuments(query)
+    
+    return res
+    .status(200)
+    .json(new ApiResponse(200,{
+        users,
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total/limit)
+    },"Users fetched successfully"))
+})
+
+// Get user by ID (admin only)
+const getUserById = asyncHandler(async(req,res)=>{
+    const {userId} = req.params
+    
+    if(!userId){
+        throw new ApiError(400,"User ID is required")
+    }
+    
+    const user = await User.findById(userId).select("-password -refreshToken")
+    
+    if(!user){
+        throw new ApiError(404,"User not found")
+    }
+    
+    return res
+    .status(200)
+    .json(new ApiResponse(200,user,"User fetched successfully"))
+})
+
+// Admin login (same as regular login but with admin role check)
+const adminLogin = asyncHandler(async(req,res)=>{
+    const {email,password} = req.body
+    if(!email || !password){
+        throw new ApiError(400,"Email and password are required")
+    }
+
+    const user = await User.findOne({
+        email
+    })
+
+    if(!user){
+        throw new ApiError(401,"Invalid email or password")
+    }
+
+    if(user.role !== 'admin'){
+        throw new ApiError(403,"Access denied. Admin role required.")
+    }
+
+    const isPasswordValid = await user.isPasswordCorrect(password)
+
+    if(!isPasswordValid){
+        throw new ApiError(401, "Invalid email or password");
+    }
+
+    const {accessToken,refreshToken} = await generateAccessAndRefeshTokens(user._id)
+
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+   .status(200)
+   .cookie("accessToken", accessToken, options)
+   .cookie("refreshToken", refreshToken, options)
+            .json(
+                new ApiResponse(200,{user:loggedInUser,accessToken,refreshToken},"Admin logged in successfully")
+            )
 })
 
 export {
         registerUser,
         loginUser,
+        adminLogin,
         logoutUser,
         getCurrentUser,
         changeCurrentPassword,
         updateAccountDetails,
         refreshAccessToken,
-        updateUserAvatar
-    } 
+        updateUserAvatar,
+        promoteToAdmin,
+        getAllUsers,
+        getUserById
+    }

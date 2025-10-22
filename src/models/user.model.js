@@ -8,6 +8,10 @@ const userSchema = new Schema(
 			required: true,
 			trim: true,
 		},
+		role:{
+			type:String,
+			default:"user"
+		},
         avatar:{
             type:String,
             required:true,
@@ -20,7 +24,7 @@ const userSchema = new Schema(
 		},
 		password: {
 			type: String,
-			requried: true,
+			required: true,
 			minLength: 3,
 		},
 		address: {
@@ -57,8 +61,8 @@ userSchema.methods.generateAccessToken = function(){
 			{
 				_id: this._id,
 				email: this.email,
-				username: this.username,
-				fullName: this.fullName,
+				name: this.name,
+				role: this.role,
 			},
 			process.env.ACCESS_TOKEN_SECRET,
 			{
@@ -72,8 +76,7 @@ userSchema.methods.generateRefreshToken = function(){
 			{
 				_id: this._id,
 				email: this.email,
-				username: this.username,
-				fullName: this.fullName,
+				name: this.name,
 			},
 			process.env.REFRESH_TOKEN_SECRET,
 			{

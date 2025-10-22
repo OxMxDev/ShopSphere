@@ -7,7 +7,7 @@ import {Review} from "../models/review.model.js"
 import jwt from "jsonwebtoken"
 import { DeleteFile } from "../utils/cloudinary.js";
 
-const createProduct = asyncHandler(async(req,res)=>{
+const createProduct = asyncHandler(async(req,res)=>{ 
     const {name,description,price,brand,category,stock,sku,discount,attributes,tags} = req.body
     if(!name || !description || !price || !brand || !category || !stock){
         throw new ApiError(400,"All field are required")
@@ -28,8 +28,8 @@ const createProduct = asyncHandler(async(req,res)=>{
         imageUrls.push(uploadedImage.url)
     }
 
-    const product = await Product.create({
-        name,
+    const product = await Product.create({  
+        name, 
         description,
         price,
         brand,
