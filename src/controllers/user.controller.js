@@ -71,9 +71,14 @@ const registerUser = asyncHandler(async(req,res)=>{
 
     // Check if user wants to register as admin
     let userRole = "user";
-    if(role === "admin" && adminKey === process.env.ADMIN_REGISTRATION_KEY){
-        userRole = "admin";
-    }
+
+		if (role === "admin") {
+			if (adminKey !== process.env.ADMIN_REGISTRATION_KEY) {
+				throw new ApiError(403, "Invalid admin key");
+			}
+			userRole = "admin";
+		}
+
 
     const user = await User.create({
 			name,
@@ -272,9 +277,9 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
 
     const oldUser = await User.findById(req.user._id)
     const oldAvatarUrl = oldUser?.avatar
-
+    console.log("OLD AVATAR: ",oldAvatarUrl)
     const avatar = await uploadOnCloudinary(avatarLocalPath)
-
+    console.log("AVATAR: ",avatar)
     if(!avatar.url){
         throw new ApiError(500,"Something went wrong while updating avatar")
     }
