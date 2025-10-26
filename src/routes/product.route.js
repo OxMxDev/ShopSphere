@@ -8,7 +8,7 @@ const router = Router()
 router.route('/create').post(
     upload.fields([
         {
-            name:"image",
+            name:"images",
             maxCount:1,
         },
     ]),

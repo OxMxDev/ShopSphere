@@ -11,7 +11,7 @@ const createProduct = asyncHandler(async(req,res)=>{
     if(!name || !description || !price || !brand || !category || !stock){
         throw new ApiError(400,"All field are required")
     }
-    const productImage = req.files?.image?.[0].path
+    const productImage = req.files?.images?.[0].path
 
     console.log(req.files)
     if(!productImage){
@@ -31,7 +31,7 @@ const createProduct = asyncHandler(async(req,res)=>{
         brand,
         category,
         stock,
-        images:proImage.url
+        images:[proImage.url]
     })
 
     const createdProduct = await Product.findById(
