@@ -263,15 +263,15 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
     if(!avatarLocalPath){
         throw new ApiError(400,"Avatar field is missing")
     }
-
     const oldUser = await User.findById(req.user._id)
     const oldAvatarUrl = oldUser?.avatar
-
     const avatar = await uploadOnCloudinary(avatarLocalPath)
-
-    if(!avatar.url){
-        throw new ApiError(500,"Something went wrong while updating avatar")
-    }
+    if (!avatar || !avatar.url) {
+			throw new ApiError(
+				500,
+				"Something went wrong while uploading avatar to cloud storage"
+			);
+		}
 
     const user = await User.findByIdAndUpdate(
         req.user._id,
@@ -284,9 +284,8 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
 
     if (oldAvatarUrl) {
 				try {
-					const publicId = avatar.public_id || extractPublicId(oldAvatarUrl);
+					const publicId = extractPublicId(oldAvatarUrl);
 					await DeleteFile(publicId);
-					console.log("Old avatar deleted from Cloudinary");
 				} catch (error) {
 					console.error("Failed to delete old avatar:", error.message);
 				}

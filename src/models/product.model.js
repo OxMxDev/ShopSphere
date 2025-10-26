@@ -26,10 +26,12 @@ const productSchema = new Schema(
 			required: true,
 			default: 0,
 		},
-		images: {
-			type: String,
-			required: true,
-		},
+		images: [
+			{
+				type:String,
+				required:true
+			}
+		],
 		ratings: {
 			type: Number,
 			default: 0,

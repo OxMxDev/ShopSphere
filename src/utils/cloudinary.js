@@ -27,7 +27,13 @@ const uploadOnCloudinary = async (localFilePath) => {
 
 export const DeleteFile = async (publicId) => {
 	try {
+		if (!publicId) {
+			console.log("No public ID provided for deletion");
+			return { result: "not_found" };
+		}
+
 		const result = await cloudinary.uploader.destroy(publicId);
+		console.log("Cloudinary deletion result:", result);
 		return result;
 	} catch (error) {
 		console.error("src :: utils :: Cloudinary :: DeleteFile", error);
