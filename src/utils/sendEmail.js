@@ -1,25 +1,46 @@
 import nodemailer from "nodemailer";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const sendEmail = async (options) => {
-	// Create a transporter using your email service
-	const transporter = nodemailer.createTransport({
-		service: "gmail", // or use 'smtp.ethereal.email' for testing
-		auth: {
-			user: process.env.SMTP_USER, // your email address
-			pass: process.env.SMTP_PASS, // your app password (not your real password!)
-		},
-	});
+// For __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-	// Email details
-	const mailOptions = {
-		from: `"Ecommerce App" <${process.env.SMTP_USER}>`, 
-		to: options.email, // recipient
-		subject: options.subject,
-		text: options.message, // plain text message
-	};
+const sendEmail = async ({ to, subject, text, html, attachments }) => {
+	try {
+		// 1️⃣ Create transporter
+		const transporter = nodemailer.createTransport({
+			service: "gmail",
+			host: "smtp.gmail.com", // ✅ fixed typo (.com not .email)
+			port: 587,
+			secure: false,
+			auth: {
+				user: process.env.AUTH_USER,
+				pass: process.env.AUTH_PASS, // store in .env (never hardcode)
+			},
+		});
 
-	// Actually send the email
-	await transporter.sendMail(mailOptions);
+		// 2️⃣ Define mail options
+		const mailOptions = {
+			from: {
+				name: "Ecommerce App",
+				address: process.env.AUTH_USER,
+			},
+			to, // e.g. "user@gmail.com"
+			subject,
+			text,
+			html,
+			attachments, // optional
+		};
+
+		// 3️⃣ Send mail
+		const info = await transporter.sendMail(mailOptions);
+		console.log("✅ Email sent:", info.response);
+		return info;
+	} catch (error) {
+		console.error("❌ Error sending email:", error);
+		throw error;
+	}
 };
 
 export default sendEmail;
