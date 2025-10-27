@@ -314,6 +314,10 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, req.user, "Current User fetched successfully"));
 });
 
+const forgotPassword = asyncHandler(async(req,res)=>{
+    // to be implemented
+})
+
 const registerAdmin = asyncHandler(async(req,res)=>{
     const {name,email,password,address,phone,adminKey} = req.body
 
@@ -340,7 +344,7 @@ const registerAdmin = asyncHandler(async(req,res)=>{
 		if (phone.length !== 10) {
 			throw new ApiError(400, "Invalid phone number");
 		}
-        
+
     const avatarLocalPath = req.files?.avatar?.[0].path
 
     console.log(req.files)
