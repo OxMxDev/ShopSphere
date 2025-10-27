@@ -17,7 +17,7 @@ router.route('/create').post(
     createProduct
 )
 
-router.route('/getAllProducts').get(getAllProducts)
-router.route('/:id').get(getProductById).patch(verifyJWT,verifyAdmin,updateProduct).delete(verifyJWT,verifyAdmin,deleteProduct)
+router.route('/getAllProducts').get(verifyJWT,getAllProducts)
+router.route('/:id').get(verifyJWT,getProductById).patch(verifyJWT,verifyAdmin,updateProduct).delete(verifyJWT,verifyAdmin,deleteProduct)
 
 export default router

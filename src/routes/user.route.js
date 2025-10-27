@@ -1,6 +1,6 @@
 import {Router} from "express"
 
-import { changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar } from "../controllers/user.controller.js"
+import { changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar, registerAdmin } from "../controllers/user.controller.js"
 import { upload } from "../middlewares/multer.middleware.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
 const router = Router()
@@ -14,6 +14,16 @@ router.route("/register").post(
 	]),
 	registerUser
 );  
+
+router.route("/register-admin").post(
+	upload.fields([
+		{
+			name: "avatar",
+			maxCount: 1,
+		},
+	]),
+	registerAdmin
+);
 
 // secured routes
 router.route('/login').post(loginUser)
