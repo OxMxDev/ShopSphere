@@ -37,6 +37,24 @@ const addProductToCart = asyncHandler(async(req,res)=>{
     .json(new ApiResponse(200,cart,"Product added to cart successfully"))
 }) 
 
+const removeProductFromCart = asyncHandler(async(req,res)=>{
+    const {productId} = req.body;
+    let cart = await Cart.findOne({user:req.user._id})
+    if(!cart){
+        throw new ApiError(400,"Cart not found")
+    }
+    const itemIndex = cart.items.findIndex(item=>item.product.toString()===productId)
+    if(itemIndex > -1){
+        cart.items.splice(itemIndex,1)
+    }else{
+        throw new ApiError(400,"Product not found in cart")
+    }
+    await cart.save()
+    return res
+    .status(200)
+    .json(new ApiResponse(200,cart,"Product removed from cart successfully"))
+})
 export {
-    addProductToCart
+    addProductToCart,
+    removeProductFromCart
 }
