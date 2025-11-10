@@ -18,9 +18,11 @@ import productRouter from "./routes/product.route.js"
 import adminRouter from "./routes/admin.route.js"
 import cartRouter from "./routes/cart.route.js"
 import orderRouter from "./routes/order.route.js"
+import categoryRouter from "./routes/category.route.js"
 app.use('/api/v1/users',userRouter)
 app.use('/api/v1/products',productRouter)
 app.use('/api/v1/admins',adminRouter)
 app.use('/api/v1/cart',cartRouter)
 app.use('/api/v1/orders',orderRouter)
+app.use('/api/v1/categories',categoryRouter)
 export {app}
