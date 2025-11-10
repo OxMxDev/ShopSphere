@@ -90,8 +90,8 @@ const updateCategory = asyncHandler(async(req,res)=>{
         if(category.image){
             try {
                 const parts = category.image.split('/')
-                const fileNmae = parts[parts.length - 1]
-                const publicId = fileNmae.split(".")[0]
+                const fileName = parts[parts.length - 1]
+                const publicId = fileName.split(".")[0]
                 await DeleteFile(publicId)
             } catch (error) {
                 console.error("Failed to delete old category image:",error.message)
@@ -102,6 +102,7 @@ const updateCategory = asyncHandler(async(req,res)=>{
             throw new ApiError(500,"Failed to upload category image")
         }
         categoryImage = uploadedImage.url
+    }
         const updatedCategory = await Category.findByIdAndUpdate(
             id,
             {
@@ -117,7 +118,7 @@ const updateCategory = asyncHandler(async(req,res)=>{
         .status(200)
         .json(new ApiResponse(200,updatedCategory,"Category updated successfully"))
     }
-})
+)
 
 const deleteCategory = asyncHandler(async(req,res)=>{
     const {id} = req.params
