@@ -2,19 +2,19 @@ import { Cart } from "../models/cart.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-
+import {Product} from "../models/product.model.js";
 
 const addProductToCart = asyncHandler(async(req,res)=>{
     const {productId,qty} = req.body;
-    const product = await Cart.findById(productId)
-    if(product){
+    const product = await Product.findById(productId)
+    if(!product){
         throw new ApiError(400,"Product not found")
     }
     if(product.stock < qty){
         throw new ApiError(400,"Insufficient stock")
     }
 
-    const cart = await Cart.findOne({user:req.user._id})
+    let cart = await Cart.findOne({user:req.user._id})
     if(!cart){
         cart = await Cart.create({
             user:req.user._id,
