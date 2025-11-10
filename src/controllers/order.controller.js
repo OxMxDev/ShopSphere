@@ -37,6 +37,27 @@ const createOrder = asyncHandler(async(req,res)=>{
     .json(new ApiResponse(201,order,"Order created successfully"))
 })
 
+const getOrderById = asyncHandler(async (req, res) => {
+	const { orderId } = req.params;
+    console.log(orderId);
+	const order = await Order.findById(orderId)
+		.populate("user", "name email")
+		.populate("orderItems.product");
+	if (!order) {
+		throw new ApiError(404, "Order not found");
+	}
+	if (
+		order.user._id.toString() !== req.user._id.toString() &&
+		req.user.role !== "admin"
+	) {
+		throw new ApiError(403, "Not authorized to view this order");
+	}
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, order, "Order fetched successfully"));
+});
 export {
-    createOrder
+    createOrder,
+    getOrderById
 }
