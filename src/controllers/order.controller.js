@@ -85,9 +85,25 @@ const updateOrderToPaid = asyncHandler(async(req,res)=>{
     .status(200)
     .json(new ApiResponse(200,updatedOrder,"Order payment updated successfully"))
 })
+
+const updateOrderToDelivered = asyncHandler(async(req,res)=>{
+    const {orderId} = req.params
+    const order = await Order.findById(orderId)
+    if(!order){
+        throw new ApiError(404,"Order not found")
+    }
+    order.isDelievered = true;
+    order.delieveredAt = Date.now();
+    const updatedOrder = await order.save()
+    return res
+    .status(200)
+    .json(new ApiResponse(200,updatedOrder,"Order delivery updated successfully"))
+})
+
 export {
     createOrder,
     getOrderById,
     getUserOrders,
-    updateOrderToPaid
+    updateOrderToPaid,
+    updateOrderToDelivered
 }
