@@ -54,7 +54,20 @@ const removeProductFromCart = asyncHandler(async(req,res)=>{
     .status(200)
     .json(new ApiResponse(200,cart,"Product removed from cart successfully"))
 })
+
+const getUserCart = asyncHandler(async(req,res)=>{
+    let cart = await Cart.findOne({user:req.user._id}).populate('items.product')
+    if(!cart){
+        return res
+        .status(200)
+        .json(new ApiResponse(200,{items:[]},"Cart is empty"))
+    }
+    return res
+    .status(200)
+    .json(new ApiResponse(200,cart,"Cart fetched successfully"))
+})
 export {
     addProductToCart,
-    removeProductFromCart
+    removeProductFromCart,
+    getUserCart
 }
