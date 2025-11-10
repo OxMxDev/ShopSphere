@@ -37,6 +37,30 @@ const createCategory = asyncHandler(async(req,res)=>{
     .json(new ApiResponse(201,createdCategory,"Category created successfully"))
 })
 
-export{
-    createCategory
-}
+const getAllCategories = asyncHandler(async(req,res)=>{
+    const categories = (await Category.find().sort({createdAt:-1}))
+    if(categories.length === 0){
+        return res
+        .status(200)
+        .json(new ApiResponse(200,[], "No categories found"))
+    }
+    return res
+    .status(200)
+    .json(new ApiResponse(200,categories,"Categories fetched successfully"))
+})
+
+const getCategoryById = asyncHandler(async(req,res)=>{
+    const {id} = req.params
+    if(!id){
+        throw new ApiError(400,"Category Id is required")
+    }
+    const category = await Category.findById(id)
+    if(!category){
+        throw new ApiError(404,"Category not found")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200,category,"Category fetched successfully"))
+})
+export { createCategory, getAllCategories };
