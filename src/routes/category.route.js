@@ -2,7 +2,7 @@ import { Router } from "express";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { verifyAdmin } from "../middlewares/admin.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
-import { createCategory, getAllCategories, getCategoryById, updateCategory } from "../controllers/category.controller.js";
+import { createCategory, getAllCategories, getCategoryById, updateCategory, deleteCategory } from "../controllers/category.controller.js";
 const router = Router()
 router
 	.route("/createCategory")
@@ -16,5 +16,11 @@ router.route('/updatedCategory/:id').patch(
     verifyJWT,
     verifyAdmin,
     updateCategory
+);
+
+router.route('/deleteCategory/:id').delete(
+    verifyJWT,
+    verifyAdmin,
+    deleteCategory
 );
 export default router

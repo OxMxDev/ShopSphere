@@ -4,7 +4,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
 import { DeleteFile } from "../utils/cloudinary.js";
-
+import { Product } from "../models/product.model.js";
 const createCategory = asyncHandler(async(req,res)=>{
     const {name,description} = req.body
     if(!name?.trim()){
@@ -119,4 +119,37 @@ const updateCategory = asyncHandler(async(req,res)=>{
     }
 })
 
-export { createCategory, getAllCategories, getCategoryById, updateCategory };
+const deleteCategory = asyncHandler(async(req,res)=>{
+    const {id} = req.params
+    if(!id){
+        throw new ApiError(400,"Category ID is required")
+    }
+    const category = await Category.findById(id)
+    if(!category){
+        throw new ApiError(404,"Category not found")
+    }
+    const productsInCategory = await Product.countDocuments({ category: category.name });
+    
+    if (productsInCategory > 0) {
+        throw new ApiError(400, `Cannot delete category. ${productsInCategory} products are using this category`);
+    }
+
+    if (category.image) {
+        try {
+            const parts = category.image.split('/');
+            const fileName = parts[parts.length - 1];
+            const publicId = fileName.split(".")[0];
+            await DeleteFile(publicId);
+        } catch (error) {
+            console.error("Failed to delete category image:", error.message);
+        }
+    }
+
+    await Category.findByIdAndDelete(id);
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {}, "Category deleted successfully"));
+});
+
+export { createCategory, getAllCategories, getCategoryById, updateCategory, deleteCategory };
