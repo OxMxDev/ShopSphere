@@ -63,4 +63,60 @@ const getCategoryById = asyncHandler(async(req,res)=>{
     .status(200)
     .json(new ApiResponse(200,category,"Category fetched successfully"))
 })
-export { createCategory, getAllCategories };
+
+const updateCategory = asyncHandler(async(req,res)=>{
+    const {id} = req.params
+    const {name,description} = req.body
+    if(!id){
+        throw new ApiError(400,"Category ID is required")
+    }
+    if(!name?.trim()){
+        throw new ApiError(400,"Category name is required")
+    }
+    const category = await Category.findById(id)
+    if(!category){
+        throw new ApiError(404,"Category not found")
+    }    
+    if(name.trim() !== category.name){
+        const existingCategory = await Category.findOne({name:name.trim()})
+        if(existingCategory){
+            throw new ApiError(400,"Category with this name already exists")
+        }
+    }
+    let categoryImage = category.image
+    const categoryImageLocalPath = req.file?.path
+
+    if(categoryImageLocalPath){
+        if(category.image){
+            try {
+                const parts = category.image.split('/')
+                const fileNmae = parts[parts.length - 1]
+                const publicId = fileNmae.split(".")[0]
+                await DeleteFile(publicId)
+            } catch (error) {
+                console.error("Failed to delete old category image:",error.message)
+            }
+        }
+        const uploadedImage = await uploadOnCloudinary(categoryImageLocalPath)
+        if(!uploadedImage.url){
+            throw new ApiError(500,"Failed to upload category image")
+        }
+        categoryImage = uploadedImage.url
+        const updatedCategory = await Category.findByIdAndUpdate(
+            id,
+            {
+                $set:{
+                    name:name.trim(),
+                    description:description?.trim() || "",
+                    image:categoryImage
+                }
+            },
+            {new:true}
+        )
+        return res
+        .status(200)
+        .json(new ApiResponse(200,updatedCategory,"Category updated successfully"))
+    }
+})
+
+export { createCategory, getAllCategories, getCategoryById, updateCategory };
