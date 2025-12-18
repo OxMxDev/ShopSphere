@@ -13,7 +13,6 @@ const Login = ({onLoginSuccess}) => {
         loginUser({email,password}).then((res)=>{
             console.log(res.data);
             onLoginSuccess();
-            navigate("/")
         }).catch((err)=>{
             console.log(err);
         })

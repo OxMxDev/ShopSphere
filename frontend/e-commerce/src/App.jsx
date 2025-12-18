@@ -33,10 +33,15 @@ function App() {
           setUser(null);
         }
       }
+      const handleLoginSuccess = async () => {
+				const res = await getCurrentUser();
+				setUser(res.data.data);
+				setIsAuthenticated(true);
+			};
   return (
     <>
       <Navbar isAuthenticated={isAuthenticated} user={user} onLogout={handleLogout}/>
-      <AppRoutes isAuthenticated={isAuthenticated}/>
+      <AppRoutes isAuthenticated={isAuthenticated} onLoginSuccess={handleLoginSuccess}/>
     </>
   )
 }
