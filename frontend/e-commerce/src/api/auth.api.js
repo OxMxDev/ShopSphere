@@ -11,5 +11,4 @@ export const getCurrentUser = ()=>{
     return axiosInstance.get("/users/current-user");
 }
 export const logoutUser = ()=>{
-    localStorage.removeItem('token')
 }

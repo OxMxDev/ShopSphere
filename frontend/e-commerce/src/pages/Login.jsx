@@ -12,7 +12,6 @@ const Login = () => {
 		console.log({ email, password });
         loginUser({email,password}).then((res)=>{
             console.log(res.data);
-            localStorage.setItem('token',res.data.data.accessToken)
             navigate("/")
         }).catch((err)=>{
             console.log(err);
