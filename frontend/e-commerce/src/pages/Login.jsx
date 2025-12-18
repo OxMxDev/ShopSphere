@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { loginUser } from "../api/auth.api";
+import {useNavigate} from "react-router-dom"
 const Login = () => {
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
-
+    let navigate = useNavigate()
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		console.log({ email, password });
         loginUser({email,password}).then((res)=>{
             console.log(res.data);
+            localStorage.setItem('token',res.data.data.accessToken)
+            navigate("/")
         }).catch((err)=>{
             console.log(err);
         })
