@@ -11,4 +11,5 @@ export const getCurrentUser = ()=>{
     return axiosInstance.get("/users/current-user");
 }
 export const logoutUser = ()=>{
+    return axiosInstance.post('/users/logout')
 }
