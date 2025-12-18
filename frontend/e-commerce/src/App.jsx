@@ -38,6 +38,10 @@ function App() {
 				setUser(res.data.data);
 				setIsAuthenticated(true);
 			};
+
+      if(loading){
+        return <div>Loading...</div>
+      }
   return (
     <>
       <Navbar isAuthenticated={isAuthenticated} user={user} onLogout={handleLogout}/>

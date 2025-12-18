@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
-const AppRoutes = ({onLoginSuccess,isAuthenticated}) => {
-
+import Products from "../pages/Products";
+const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 	return (
 		<Routes>
 			<Route
@@ -15,6 +15,14 @@ const AppRoutes = ({onLoginSuccess,isAuthenticated}) => {
 				element={
 					<ProtectedRoute isAuthenticated={isAuthenticated}>
 						<Home />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/products"
+				element={
+					<ProtectedRoute isAuthenticated={isAuthenticated}>
+						<Products />
 					</ProtectedRoute>
 				}
 			/>
