@@ -23,7 +23,7 @@ function App() {
       ) : isAuthenticated ? (
         <p>Welcome to the E-commerce App!</p>
       ) : (
-        <Login />
+        <Login onLoginSuccess={() => setIsAuthenticated(true)} />
       )}
     </>
   )

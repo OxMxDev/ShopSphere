@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 import { loginUser, getCurrentUser } from "../api/auth.api";
 import {useNavigate} from "react-router-dom"
-const Login = () => {
+const Login = ({onLoginSuccess}) => {
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
     let navigate = useNavigate()
@@ -12,6 +12,7 @@ const Login = () => {
 		console.log({ email, password });
         loginUser({email,password}).then((res)=>{
             console.log(res.data);
+            onLoginSuccess();
             navigate("/")
         }).catch((err)=>{
             console.log(err);
