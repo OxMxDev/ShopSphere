@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { loginUser } from "../api/auth.api";
+import React, { useState} from "react";
+import { loginUser, getCurrentUser } from "../api/auth.api";
 import {useNavigate} from "react-router-dom"
 const Login = () => {
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
     let navigate = useNavigate()
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -17,6 +18,7 @@ const Login = () => {
             console.log(err);
         })
 	};
+
 	return (
 		<>
 			<div className="w-[300px] h-[600px] flex flex-col gap-4 justify-center ">
