@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import Products from "../pages/Products";
 import ProductDetails from "../pages/ProductDetails";
+import Cart from "../pages/Cart";
 const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 	return (
 		<Routes>
@@ -32,6 +33,14 @@ const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 				element={
 					<ProtectedRoute isAuthenticated={isAuthenticated}>
 						<ProductDetails />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/cart"
+				element={
+					<ProtectedRoute isAuthenticated={isAuthenticated}>
+						<Cart />
 					</ProtectedRoute>
 				}
 			/>

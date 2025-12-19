@@ -3,11 +3,14 @@ import { useEffect } from "react";
 import { useState } from "react";
 import {useParams} from "react-router-dom";
 import { getProductById } from "../api/product.api";
+import { useCart } from "../context/cartContext";
+
 const ProductDetails = () => {
     const [product,setProduct] = useState(null);
     const [loading,setLoading] = useState(true);
     const [error,setError] = useState(null);
     const {id} = useParams()
+    const {addToCart} = useCart();
 
     useEffect(()=>{
         getProductById(id)
@@ -61,6 +64,15 @@ const ProductDetails = () => {
 					<p>
 						<strong>Rating:</strong> ⭐ {product.ratings}
 					</p>
+					<button
+						onClick={() => {
+							console.log("Add to cart clicked", product);
+							addToCart(product);
+						}}
+						className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+					>
+						Add to Cart
+					</button>
 				</div>
 			</div>
 		</>
