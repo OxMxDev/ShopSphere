@@ -1,14 +1,33 @@
 import { useCart } from "../context/cartContext";
 import { useState } from "react";
+import { createOrder } from "../api/order.api";
 const Checkout = () => {
     const {cartItems} = useCart();
+    const [paymentMethod, setPaymentMethod] = useState("COD");
     const [address, setAddress] = useState({
-			name: "",
-			street: "",
-			city: "",
-			pincode: "",
-			phone: "",
-		});
+            name: "",
+            street: "",
+            city: "",
+            pincode: "",
+            phone: "",
+        });
+    const orderPayload = {
+			shippingAddress: address,
+			paymentMethod,
+		};
+
+        const handlePlaceOrder = async () => {
+					try {
+						const res = await createOrder(orderPayload);
+						console.log("Order created:", res.data);
+
+						clearCart(); // frontend cart
+						navigate(`/order/${res.data.data._id}`);
+					} catch (error) {
+						console.error("Order failed", error);
+						alert(error.response?.data?.message || "Order failed");
+					}
+				};
 
     if(cartItems.length === 0){
         return <p>Your cart is empty. Please add items to proceed to checkout.</p>
@@ -71,13 +90,7 @@ const Checkout = () => {
 			</div>
 			<button
 				className="bg-green-600 text-white px-4 py-2 rounded mt-4"
-				onClick={() => {
-					console.log("Order data:", {
-						cartItems,
-						address,
-						total,
-					});
-				}}
+				onClick={handlePlaceOrder}
 			>
 				Place Order
 			</button>

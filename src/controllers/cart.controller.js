@@ -31,10 +31,13 @@ const addProductToCart = asyncHandler(async(req,res)=>{
     }else{
         cart.items.push({product:productId,qty})
     }
-    await cart.save()
-    return res
-    .status(200)
-    .json(new ApiResponse(200,cart,"Product added to cart successfully"))
+    await cart.save();
+
+		cart = await Cart.findOne({ user: req.user._id }).populate("items.product");
+
+		return res
+			.status(200)
+			.json(new ApiResponse(200, cart, "Product added to cart successfully"));
 }) 
 
 const removeProductFromCart = asyncHandler(async(req,res)=>{
@@ -49,10 +52,15 @@ const removeProductFromCart = asyncHandler(async(req,res)=>{
     }else{
         throw new ApiError(400,"Product not found in cart")
     }
-    await cart.save()
-    return res
-    .status(200)
-    .json(new ApiResponse(200,cart,"Product removed from cart successfully"))
+    await cart.save();
+
+		cart = await Cart.findOne({ user: req.user._id }).populate("items.product");
+
+		return res
+			.status(200)
+			.json(
+				new ApiResponse(200, cart, "Product removed from cart successfully")
+			);
 })
 
 const getUserCart = asyncHandler(async(req,res)=>{

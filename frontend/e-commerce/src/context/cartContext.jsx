@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
-
+import { addProductToCart, removeProductFromCart, getUserCart } from "../api/cart.api";
 const cartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -10,25 +10,25 @@ export const CartProvider = ({ children }) => {
     });
 
     useEffect(()=>{
-        localStorage.setItem("cart",JSON.stringify(cartItems));
-    },[cartItems]);
-	const addToCart = (product) => {
-        console.log("Adding to cart:", product);
-		setCartItems((prev) => {
-            console.log("Previous cart:", prev);
-			const existing = prev.find((item) => item.id === product._id);
-
-			if (existing) {
-				return prev.map((item) =>
-					item.id === product._id ? { ...item, qty: item.qty + 1 } : item
-				);
-			}
-			return [...prev, { ...product, qty: 1 }];
-		});
-	};
+        getUserCart()
+        .then((res)=>{
+            setCartItems(res.data.data.items);
+			console.log("Cart fetched", res.data.data.items);
+        })
+        .catch((err)=>{
+            console.log("Error fetching cart",err);
+        })
+    },[]);
+    
+    const addToCart = async(product)=>{
+		console.log("Adding to cart", product);
+        await addProductToCart(product._id,1)
+        const res = await getUserCart()
+        setCartItems(res.data.data.items)
+    }
 
 	const removeFromCart = (id) => {
-		setCartItems((prev) => prev.filter((item) => item._id !== id));
+        removeProductFromCart(id)
 	};
 
     const increaseQty = (id) => {
