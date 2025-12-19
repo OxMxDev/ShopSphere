@@ -28,11 +28,30 @@ export const CartProvider = ({ children }) => {
 	};
 
 	const removeFromCart = (id) => {
-		setCartItems((prev) => prev.filter((item) => item.id !== id));
+		setCartItems((prev) => prev.filter((item) => item._id !== id));
 	};
 
+    const increaseQty = (id) => {
+			setCartItems((prev) =>
+				prev.map((item) =>
+					item._id === id ? { ...item, qty: item.qty + 1 } : item
+				)
+			);
+		};
+
+		const decreaseQty = (id) => {
+			setCartItems(
+				(prev) =>
+					prev
+						.map((item) =>
+							item._id === id ? { ...item, qty: item.qty - 1 } : item
+						)
+						.filter((item) => item.qty > 0) // auto remove
+			);
+		};
+
 	return (
-		<cartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
+		<cartContext.Provider value={{ cartItems, addToCart, removeFromCart, increaseQty, decreaseQty }}>
 			{children}
 		</cartContext.Provider>
 	);
