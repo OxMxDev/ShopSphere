@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 const ProductCard = ({ product }) => {
 	return (
+		<Link to={`/products/${product._id}`}>
 		<div className="border rounded-lg p-4 w-64">
 			<img
 				src={product.images?.[0]}
@@ -12,6 +14,7 @@ const ProductCard = ({ product }) => {
 
 			<p className="text-green-600 font-semibold mt-1">₹{product.price}</p>
 		</div>
+		</Link>
 	);
 };
 

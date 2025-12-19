@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import Home from "../pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import Products from "../pages/Products";
+import ProductDetails from "../pages/ProductDetails";
 const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 	return (
 		<Routes>
@@ -23,6 +24,14 @@ const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 				element={
 					<ProtectedRoute isAuthenticated={isAuthenticated}>
 						<Products />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/products/:id"
+				element={
+					<ProtectedRoute isAuthenticated={isAuthenticated}>
+						<ProductDetails />
 					</ProtectedRoute>
 				}
 			/>
