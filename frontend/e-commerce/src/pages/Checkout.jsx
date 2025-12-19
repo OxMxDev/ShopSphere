@@ -1,8 +1,10 @@
 import { useCart } from "../context/cartContext";
 import { useState } from "react";
 import { createOrder } from "../api/order.api";
+import { useNavigate } from "react-router-dom";
 const Checkout = () => {
     const {cartItems} = useCart();
+	const navigate = useNavigate();
     const [paymentMethod, setPaymentMethod] = useState("COD");
     const [address, setAddress] = useState({
             name: "",
@@ -21,7 +23,6 @@ const Checkout = () => {
 						const res = await createOrder(orderPayload);
 						console.log("Order created:", res.data);
 
-						clearCart(); // frontend cart
 						navigate(`/order/${res.data.data._id}`);
 					} catch (error) {
 						console.error("Order failed", error);
@@ -32,23 +33,30 @@ const Checkout = () => {
     if(cartItems.length === 0){
         return <p>Your cart is empty. Please add items to proceed to checkout.</p>
     }
-
-    const total = cartItems.reduce((sum,item)=>sum + item.price * item.qty,0)
+	const total = cartItems.reduce((sum, item) => {
+		if (!item.product) return sum;
+		return sum + item.product.price * item.qty;
+	}, 0);
 	return (
 		<>
 			<div className="border p-4 rounded">
 				<h2 className="text-lg font-bold mb-2">Order Summary</h2>
 
-				{cartItems.map((item) => (
-					<div key={item._id} className="flex justify-between mb-2">
-						<span>
-							{item.name} × {item.qty}
-						</span>
-						<span>₹{item.price * item.qty}</span>
-					</div>
-				))}
+				{cartItems.map((item) => {
+					if (!item.product) return null;
 
-				<hr className="my-2" />
+					return (
+						
+						<div key={item.product._id} className="flex justify-between mb-2">
+						<span>
+							{item.product.name} × {item.qty}
+						</span>
+						<span>₹{item.product.price * item.qty}</span>
+					</div>
+)
+})}
+
+<hr className="my-2" />
 
 				<div className="flex justify-between font-semibold">
 					<span>Total</span>
