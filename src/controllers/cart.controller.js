@@ -74,8 +74,45 @@ const getUserCart = asyncHandler(async(req,res)=>{
     .status(200)
     .json(new ApiResponse(200,cart,"Cart fetched successfully"))
 })
+
+const updateCartItemQty = asyncHandler(async (req, res) => {
+	const { productId, qty } = req.body;
+
+	if (qty < 1) {
+		throw new ApiError(400, "Quantity must be at least 1");
+	}
+
+	const cart = await Cart.findOne({ user: req.user._id });
+	if (!cart) {
+		throw new ApiError(400, "Cart not found");
+	}
+
+	const item = cart.items.find((item) => item.product.toString() === productId);
+
+	if (!item) {
+		throw new ApiError(400, "Product not in cart");
+	}
+
+	const product = await Product.findById(productId);
+	if (product.stock < qty) {
+		throw new ApiError(400, "Insufficient stock");
+	}
+
+	item.qty = qty;
+	await cart.save();
+
+	const populatedCart = await Cart.findOne({ user: req.user._id }).populate(
+		"items.product"
+	);
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, populatedCart, "Cart updated"));
+});
+
 export {
     addProductToCart,
     removeProductFromCart,
-    getUserCart
+    getUserCart,
+    updateCartItemQty
 }

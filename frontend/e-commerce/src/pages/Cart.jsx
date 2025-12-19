@@ -31,9 +31,9 @@ const Cart = () => {
 						</div>
 
 						<div className="flex items-center gap-3">
-							<button onClick={() => decreaseQty(item.product._id)}>−</button>
+							<button onClick={() => decreaseQty(item.product._id,item.qty)}>−</button>
 							<span>{item.qty}</span>
-							<button onClick={() => increaseQty(item.product._id)}>+</button>
+							<button onClick={() => increaseQty(item.product._id,item.qty)}>+</button>
 						</div>
 
 						<button onClick={() => removeFromCart(item.product._id)}>

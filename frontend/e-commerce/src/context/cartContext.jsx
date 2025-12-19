@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
-import { addProductToCart, removeProductFromCart, getUserCart } from "../api/cart.api";
+import { addProductToCart, removeProductFromCart, getUserCart, updateCartItemQty } from "../api/cart.api";
 const cartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -27,28 +27,29 @@ export const CartProvider = ({ children }) => {
         setCartItems(res.data.data.items)
     }
 
-	const removeFromCart = (id) => {
-        removeProductFromCart(id)
+	const increaseQty = async (productId, currentQty) => {
+		await updateCartItemQty(productId, currentQty + 1);
+		const res = await getUserCart();
+		setCartItems(res.data.data.items);
 	};
 
-    const increaseQty = (id) => {
-			setCartItems((prev) =>
-				prev.map((item) =>
-					item._id === id ? { ...item, qty: item.qty + 1 } : item
-				)
-			);
-		};
+	const decreaseQty = async (productId, currentQty) => {
+		if (currentQty === 1) {
+			await removeProductFromCart(productId);
+		} else {
+			await updateCartItemQty(productId, currentQty - 1);
+		}
 
-		const decreaseQty = (id) => {
-			setCartItems(
-				(prev) =>
-					prev
-						.map((item) =>
-							item._id === id ? { ...item, qty: item.qty - 1 } : item
-						)
-						.filter((item) => item.qty > 0) // auto remove
-			);
-		};
+		const res = await getUserCart();
+		setCartItems(res.data.data.items);
+	};
+
+	const removeFromCart = async (productId) => {
+		await removeProductFromCart(productId);
+		const res = await getUserCart();
+		setCartItems(res.data.data.items);
+	};
+
 
 	return (
 		<cartContext.Provider value={{ cartItems, addToCart, removeFromCart, increaseQty, decreaseQty }}>

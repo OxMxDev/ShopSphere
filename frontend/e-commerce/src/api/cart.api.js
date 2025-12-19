@@ -11,3 +11,7 @@ export const removeProductFromCart = (productId)=>{
 export const getUserCart = () => {
     return axiosInstance.get("/cart/getUserCart");
 }
+
+export const updateCartItemQty = (productId, qty) => {
+    return axiosInstance.post("/cart/update", { productId, qty });
+}
