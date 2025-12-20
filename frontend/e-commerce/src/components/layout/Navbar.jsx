@@ -22,7 +22,7 @@ const Navbar = ({isAuthenticated,user,onLogout}) => {
 					<li>Home</li>
 					<Link to="/products">Products</Link>
 					<Link to="/cart">Cart ({cartItems.length})</Link>
-					<li>Orders</li>
+					<Link to="/my-orders">My Orders</Link>
 					<li onClick={onLogout} style={{ cursor: "pointer" }}>
 						Logout
 					</li>

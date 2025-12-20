@@ -6,3 +6,7 @@ export const createOrder = (data) => {
 export const getOrderById = (orderId) => {
 	return axiosInstance.get(`/orders/getOrder/${orderId}`);
 }
+
+export const getUserOrders = () =>{
+	return axiosInstance.get("/orders/myorders");
+}
