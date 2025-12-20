@@ -16,7 +16,7 @@ axiosInstance.interceptors.request.use((config)=>{
 
 axiosInstance.interceptors.response.use(
 	(response) => {
-		return response; // ✅ IMPORTANT
+		return response; 
 	},
 	(error) => {
 		if (error.response?.status === 401) {
