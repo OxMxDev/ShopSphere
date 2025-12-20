@@ -60,7 +60,7 @@ const getAllProducts = asyncHandler(async(req,res)=>{
         const total = await Product.countDocuments(query)
 
         if(products.length === 0){
-            throw new ApiError(404,"No products found" )
+            throw new ApiError(401,"No products found" )
         }
     return res
     .status(200)
@@ -122,13 +122,15 @@ const deleteProduct = asyncHandler(async(req,res)=>{
     if(!product){
         throw new ApiError(404,"Product not found")
     }
-    if(product.images){
-        const parts = product.images.split('/')
-        const fileName = parts[parts.length - 1]
-        const publicId = fileName.split(".")[0]
+    if (product.images && product.images.length > 0) {
+			const imageUrl = product.images[0];
+			const parts = imageUrl.split("/");
+			const fileName = parts[parts.length - 1];
+			const publicId = fileName.split(".")[0];
 
-        await DeleteFile(publicId)
-    }
+			await DeleteFile(publicId);
+		}
+
     await Product.findByIdAndDelete(id)
     return res
     .status(200)
