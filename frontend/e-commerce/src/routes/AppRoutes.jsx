@@ -8,6 +8,7 @@ import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
 import OrderDetails from "../pages/OrderDetails";
 import MyOrders from "../pages/MyOrders";
+import AdminOrders from "../pages/admin/AdminOrders";
 const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 	return (
 		<Routes>
@@ -68,6 +69,14 @@ const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 				element={
 					<ProtectedRoute isAuthenticated={isAuthenticated}>
 						<MyOrders />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/admin/orders"
+				element={
+					<ProtectedRoute isAuthenticated={isAuthenticated} adminOnly>
+						<AdminOrders />
 					</ProtectedRoute>
 				}
 			/>

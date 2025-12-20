@@ -10,3 +10,11 @@ export const getOrderById = (orderId) => {
 export const getUserOrders = () =>{
 	return axiosInstance.get("/orders/myorders");
 }
+
+export const getAllOrders = () =>{
+	return axiosInstance.get("/admins/getAllOrders");
+}
+
+export const updateOrderToDelivered = (orderId) =>{
+	return axiosInstance.patch(`/orders/updateDeliveredStatus/${orderId}`);
+}
