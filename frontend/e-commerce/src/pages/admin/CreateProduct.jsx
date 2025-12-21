@@ -1,0 +1,154 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createProduct } from "../../api/product.api";
+
+const CreateProduct = () => {
+	const navigate = useNavigate();
+
+	const [loading, setLoading] = useState(false);
+
+	const [formData, setFormData] = useState({
+		name: "",
+		description: "",
+		price: "",
+		brand: "",
+		category: "",
+		stock: "",
+	});
+
+	const [image, setImage] = useState(null);
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormData((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+	};
+
+	const handleImageChange = (e) => {
+		setImage(e.target.files[0]);
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		if (!image) {
+			alert("Product image is required");
+			return;
+		}
+
+		const data = new FormData();
+		Object.keys(formData).forEach((key) => {
+			data.append(key, formData[key]);
+		});
+		data.append("images", image); // backend expects `images`
+
+		try {
+			setLoading(true);
+			await createProduct(data);
+			alert("Product created successfully");
+			navigate("/admin/products");
+		} catch (err) {
+			alert(err.response?.data?.message || "Product creation failed");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	return (
+		<div className="p-6 max-w-2xl mx-auto">
+			<h1 className="text-2xl font-bold mb-4">Create Product</h1>
+
+			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
+				<input
+					type="text"
+					name="name"
+					placeholder="Product Name"
+					value={formData.name}
+					onChange={handleChange}
+					className="border p-2 rounded"
+					required
+				/>
+
+				<textarea
+					name="description"
+					placeholder="Description"
+					value={formData.description}
+					onChange={handleChange}
+					className="border p-2 rounded"
+					rows={4}
+					required
+				/>
+
+				<input
+					type="number"
+					name="price"
+					placeholder="Price"
+					value={formData.price}
+					onChange={handleChange}
+					className="border p-2 rounded"
+					required
+				/>
+
+				<input
+					type="number"
+					name="stock"
+					placeholder="Stock"
+					value={formData.stock}
+					onChange={handleChange}
+					className="border p-2 rounded"
+					required
+				/>
+
+				<input
+					type="text"
+					name="brand"
+					placeholder="Brand"
+					value={formData.brand}
+					onChange={handleChange}
+					className="border p-2 rounded"
+					required
+				/>
+
+				<input
+					type="text"
+					name="category"
+					placeholder="Category"
+					value={formData.category}
+					onChange={handleChange}
+					className="border p-2 rounded"
+					required
+				/>
+
+				<input
+					type="file"
+					accept="image/*"
+					onChange={handleImageChange}
+					className="border p-2 rounded"
+					required
+				/>
+
+				<div className="flex gap-4">
+					<button
+						type="submit"
+						disabled={loading}
+						className="bg-green-600 text-white px-4 py-2 rounded"
+					>
+						{loading ? "Creating..." : "Create Product"}
+					</button>
+
+					<button
+						type="button"
+						onClick={() => navigate("/admin/products")}
+						className="bg-gray-300 px-4 py-2 rounded"
+					>
+						Cancel
+					</button>
+				</div>
+			</form>
+		</div>
+	);
+};
+
+export default CreateProduct;

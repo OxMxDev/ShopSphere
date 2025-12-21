@@ -11,6 +11,7 @@ import MyOrders from "../pages/MyOrders";
 import AdminOrders from "../pages/admin/AdminOrders";
 import EditProduct from "../pages/admin/EditProduct";
 import AdminProducts from "../pages/admin/AdminProducts";
+import CreateProduct from "../pages/admin/CreateProduct";
 const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 	return (
 		<Routes>
@@ -95,6 +96,14 @@ const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 				element={
 					<ProtectedRoute isAuthenticated={isAuthenticated} adminOnly>
 						<AdminProducts />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/admin/products/create"
+				element={
+					<ProtectedRoute isAuthenticated={isAuthenticated} adminOnly>
+						<CreateProduct />
 					</ProtectedRoute>
 				}
 			/>

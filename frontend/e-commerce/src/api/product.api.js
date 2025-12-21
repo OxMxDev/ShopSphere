@@ -15,3 +15,7 @@ export const updateProduct = (id,productData) =>{
 export const deleteProduct = (id) =>{
     return axiosInstance.delete(`/products/${id}`)
 }
+
+export const createProduct = (productData) =>{
+    return axiosInstance.post("/products/create",productData)
+}
