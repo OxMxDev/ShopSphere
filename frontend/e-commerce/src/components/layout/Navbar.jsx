@@ -8,7 +8,7 @@ const Navbar = ({isAuthenticated,user,onLogout}) => {
 			{isAuthenticated && user?.role == "admin" && (
 				<ul className="flex gap-4">
 					<li>Dashboard</li>
-					<li>Products</li>
+					<Link to="/admin/products">Manage Products</Link>
 					<Link to="/admin/orders">Manage Orders</Link>
 					<li>Users</li>
 					<li onClick={onLogout} style={{ cursor: "pointer" }}>

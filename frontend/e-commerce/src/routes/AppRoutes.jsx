@@ -9,6 +9,8 @@ import Checkout from "../pages/Checkout";
 import OrderDetails from "../pages/OrderDetails";
 import MyOrders from "../pages/MyOrders";
 import AdminOrders from "../pages/admin/AdminOrders";
+import EditProduct from "../pages/admin/EditProduct";
+import AdminProducts from "../pages/admin/AdminProducts";
 const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 	return (
 		<Routes>
@@ -77,6 +79,22 @@ const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 				element={
 					<ProtectedRoute isAuthenticated={isAuthenticated} adminOnly>
 						<AdminOrders />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/admin/products/:id/edit"
+				element={
+					<ProtectedRoute isAuthenticated={isAuthenticated} adminOnly>
+						<EditProduct />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/admin/products"
+				element={
+					<ProtectedRoute isAuthenticated={isAuthenticated} adminOnly>
+						<AdminProducts />
 					</ProtectedRoute>
 				}
 			/>

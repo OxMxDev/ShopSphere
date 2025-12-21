@@ -84,21 +84,39 @@ const getProductById = asyncHandler(async(req,res)=>{
 
 const updateProduct = asyncHandler(async(req,res)=>{
     const {id} = req.params
-    const {price,stock} = req.body
+    const {name,price,stock,description,category,brand} = req.body
 
     if(!id){
         throw new ApiError(400,"Product Id is required")
     }
 
-    if(!price && !stock){
-        throw new ApiError(400,"No fields to update")
-    }
+    if (
+			price === undefined &&
+			stock === undefined &&
+			description === undefined &&
+			category === undefined &&
+			brand === undefined
+		) {
+			throw new ApiError(400, "No fields to update");
+		}
     const updatedFields = {}
+    if(name !== undefined){
+        updatedFields.name = name
+    }
     if(price !== undefined){
         updatedFields.price = price
     }
     if(stock !== undefined){
         updatedFields.stock = stock
+    }
+    if(description !== undefined){
+        updatedFields.description = description
+    }
+    if(category !== undefined){
+        updatedFields.category = category
+    }
+    if(brand !== undefined){
+        updatedFields.brand = brand
     }
     const updateProduct = await Product.findByIdAndUpdate(
         id,
