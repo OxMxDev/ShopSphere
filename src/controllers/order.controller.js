@@ -5,27 +5,41 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import {Cart} from "../models/cart.model.js";
 import {Product} from "../models/product.model.js";
 
-const createOrder = asyncHandler(async(req,res)=>{
+const createOrder = asyncHandler(async (req, res) => {
 	const { shippingAddress, paymentMethod } = req.body;
+
+	// 1️⃣ Get cart with populated products
 	const cart = await Cart.findOne({ user: req.user._id }).populate(
 		"items.product"
 	);
+
 	if (!cart || cart.items.length === 0) {
 		throw new ApiError(400, "Cart is empty");
 	}
+
+	// 2️⃣ REMOVE INVALID (DELETED) PRODUCTS
+	cart.items = cart.items.filter((item) => item.product !== null);
+
+	if (cart.items.length === 0) {
+		throw new ApiError(400, "Cart contains invalid products");
+	}
+
+	// 3️⃣ CALCULATE PRICE SAFELY
 	const itemsPrice = cart.items.reduce(
 		(total, item) => total + item.product.price * item.qty,
 		0
 	);
+
 	const taxPrice = itemsPrice * 0.15;
 	const shippingPrice = itemsPrice > 100 ? 0 : 10;
 	const totalPrice = itemsPrice + taxPrice + shippingPrice;
 
+	// 4️⃣ REDUCE STOCK (CRITICAL BUSINESS LOGIC)
 	for (const item of cart.items) {
 		const product = await Product.findById(item.product._id);
 
-		if (!product) { 
-			throw new ApiError(404, "Product not found");
+		if (!product) {
+			throw new ApiError(404, "Product no longer exists");
 		}
 
 		if (product.stock < item.qty) {
@@ -36,6 +50,7 @@ const createOrder = asyncHandler(async(req,res)=>{
 		await product.save();
 	}
 
+	// 5️⃣ CREATE ORDER
 	const order = await Order.create({
 		user: req.user._id,
 		orderItems: cart.items.map((item) => ({
@@ -50,12 +65,16 @@ const createOrder = asyncHandler(async(req,res)=>{
 		shippingPrice,
 		totalPrice,
 	});
+
+	// 6️⃣ CLEAR CART AFTER SUCCESS
 	cart.items = [];
 	await cart.save();
+
 	return res
 		.status(201)
 		.json(new ApiResponse(201, order, "Order created successfully"));
-})
+});
+
 
 const getOrderById = asyncHandler(async (req, res) => {
 	const { orderId } = req.params;
