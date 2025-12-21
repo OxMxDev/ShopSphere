@@ -8,9 +8,17 @@ import { DeleteFile } from "../utils/cloudinary.js";
 
 const createProduct = asyncHandler(async(req,res)=>{
     const {name,description,price,brand,category,stock} = req.body
-    if(!name || !description || !price || !brand || !category || !stock){
-        throw new ApiError(400,"All field are required")
-    }
+    if (
+			!name ||
+			!description ||
+			price === undefined ||
+			!brand ||
+			!category ||
+			stock === undefined
+		) {
+			throw new ApiError(400, "All fields are required");
+		}
+
     const productImage = req.files?.images?.[0].path
 
     console.log(req.files)

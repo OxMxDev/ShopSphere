@@ -6,35 +6,55 @@ import {Cart} from "../models/cart.model.js";
 import {Product} from "../models/product.model.js";
 
 const createOrder = asyncHandler(async(req,res)=>{
-    const {shippingAddress,paymentMethod} = req.body;
-    const cart = await Cart.findOne({user:req.user._id}).populate('items.product')
-    if(!cart || cart.items.length === 0){
-        throw new ApiError(400,"Cart is empty")
-    }
-    const itemsPrice = cart.items.reduce((total,item)=> total + item.product.price * item.qty,0)
-    const taxPrice = itemsPrice * 0.15
-    const shippingPrice = itemsPrice > 100 ? 0 : 10
-    const totalPrice = itemsPrice + taxPrice + shippingPrice
+	const { shippingAddress, paymentMethod } = req.body;
+	const cart = await Cart.findOne({ user: req.user._id }).populate(
+		"items.product"
+	);
+	if (!cart || cart.items.length === 0) {
+		throw new ApiError(400, "Cart is empty");
+	}
+	const itemsPrice = cart.items.reduce(
+		(total, item) => total + item.product.price * item.qty,
+		0
+	);
+	const taxPrice = itemsPrice * 0.15;
+	const shippingPrice = itemsPrice > 100 ? 0 : 10;
+	const totalPrice = itemsPrice + taxPrice + shippingPrice;
 
-    const order = await Order.create({
-        user:req.user._id,
-        orderItems:cart.items.map(item=>({
-            product:item.product._id,
-            name:item.product.name,
-            qty:item.qty,
-            price:item.product.price
-        })),
-        shippingAddress,
-        paymentMethod,
-        taxPrice,
-        shippingPrice,
-        totalPrice
-    })
-    cart.items = []
-    await cart.save()
-    return res
-    .status(201)
-    .json(new ApiResponse(201,order,"Order created successfully"))
+	for (const item of cart.items) {
+		const product = await Product.findById(item.product._id);
+
+		if (!product) { 
+			throw new ApiError(404, "Product not found");
+		}
+
+		if (product.stock < item.qty) {
+			throw new ApiError(400, `Insufficient stock for ${product.name}`);
+		}
+
+		product.stock -= item.qty;
+		await product.save();
+	}
+
+	const order = await Order.create({
+		user: req.user._id,
+		orderItems: cart.items.map((item) => ({
+			product: item.product._id,
+			name: item.product.name,
+			qty: item.qty,
+			price: item.product.price,
+		})),
+		shippingAddress,
+		paymentMethod,
+		taxPrice,
+		shippingPrice,
+		totalPrice,
+	});
+	cart.items = [];
+	await cart.save();
+	return res
+		.status(201)
+		.json(new ApiResponse(201, order, "Order created successfully"));
 })
 
 const getOrderById = asyncHandler(async (req, res) => {
