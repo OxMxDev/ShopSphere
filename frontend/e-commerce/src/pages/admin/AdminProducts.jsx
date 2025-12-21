@@ -30,7 +30,7 @@ const AdminProducts = () => {
 			await deleteProduct(id);
 			fetchProducts();
 		} catch (err) {
-			alert("Delete failed");
+			toast.error(error.response?.data?.message || "Something went wrong");
 		}
 	};
 

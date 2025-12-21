@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProductById, updateProduct } from "../../api/product.api";
 import Loader from "../../components/ui/Loader";
+import toast from "react-hot-toast";
 
 const EditProduct = () => {
 	const { id } = useParams();
@@ -58,10 +59,10 @@ const EditProduct = () => {
 
 		try {
 			await updateProduct(id, formData);
-			alert("Product updated successfully");
+			toast.success("Product updated successfully");
 			navigate("/admin/products");
 		} catch (err) {
-			alert(err.response?.data?.message || "Update failed");
+			toast.error(error.response?.data?.message || "Something went wrong");
 		}
 	};
 

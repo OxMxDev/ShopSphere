@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getCurrentUser } from "./api/auth.api";
 import AppRoutes from "./routes/AppRoutes";
 import { logoutUser } from "./api/auth.api.js";
+import {Toaster} from 'react-hot-toast';
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -44,6 +45,7 @@ function App() {
       }
   return (
     <>
+      <Toaster/>
       <Navbar isAuthenticated={isAuthenticated} user={user} onLogout={handleLogout}/>
       <AppRoutes isAuthenticated={isAuthenticated} onLoginSuccess={handleLoginSuccess}/>
     </>

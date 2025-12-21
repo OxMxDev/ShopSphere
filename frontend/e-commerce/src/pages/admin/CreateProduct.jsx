@@ -34,7 +34,7 @@ const CreateProduct = () => {
 		e.preventDefault();
 
 		if (!image) {
-			alert("Product image is required");
+			toast.error(error.response?.data?.message || "Something went wrong");
 			return;
 		}
 
@@ -47,10 +47,10 @@ const CreateProduct = () => {
 		try {
 			setLoading(true);
 			await createProduct(data);
-			alert("Product created successfully");
+			toast.success("Product created successfully");
 			navigate("/admin/products");
 		} catch (err) {
-			alert(err.response?.data?.message || "Product creation failed");
+			toast.error(error.response?.data?.message || "Something went wrong");
 		} finally {
 			setLoading(false);
 		}

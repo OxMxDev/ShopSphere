@@ -26,7 +26,9 @@ const Checkout = () => {
 						navigate(`/order/${res.data.data._id}`);
 					} catch (error) {
 						console.error("Order failed", error);
-						alert(error.response?.data?.message || "Order failed");
+						toast.error(
+							error.response?.data?.message || "Something went wrong"
+						);
 					}
 				};
 
