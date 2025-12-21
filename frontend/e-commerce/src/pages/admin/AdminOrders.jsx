@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllOrders, updateOrderToDelivered } from "../../api/order.api";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/ui/Loader";
 
 const AdminOrders = () => {
 	const [orders, setOrders] = useState([]);
@@ -22,7 +23,7 @@ const AdminOrders = () => {
 		fetchOrders(); // refresh list
 	};
 
-	if (loading) return <p>Loading orders...</p>;
+	if (loading) return <Loader />;
 
 	return (
 		<div className="p-6">

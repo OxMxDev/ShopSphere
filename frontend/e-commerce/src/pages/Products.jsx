@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllProducts } from "../api/product.api";
 import ProductCard from "../components/product/ProductCard";
+import Loader from "../components/ui/Loader";
 const Products = () => {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -20,7 +21,7 @@ const Products = () => {
 			});
 	}, []);
 
-	if (loading) return <div>Loading...</div>;
+	if (loading) return <Loader />;
 	if (error) return <div>{error}</div>;
 	return (
 		<div className="flex flex-wrap gap-4">

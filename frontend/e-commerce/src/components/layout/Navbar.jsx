@@ -19,7 +19,7 @@ const Navbar = ({isAuthenticated,user,onLogout}) => {
 			)}
 			{isAuthenticated && user?.role == "user" && (
 				<ul className="flex gap-4">
-					<li>Home</li>
+					<Link to="/checkout">Checkout</Link>
 					<Link to="/products">Products</Link>
 					<Link to="/cart">Cart ({cartItems.length})</Link>
 					<Link to="/my-orders">My Orders</Link>

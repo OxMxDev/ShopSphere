@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProductById, updateProduct } from "../../api/product.api";
+import Loader from "../../components/ui/Loader";
 
 const EditProduct = () => {
 	const { id } = useParams();
@@ -64,7 +65,7 @@ const EditProduct = () => {
 		}
 	};
 
-	if (loading) return <p>Loading product...</p>;
+	if (loading) return <Loader />;
 	if (error) return <p>{error}</p>;
 
 	return (
@@ -128,10 +129,12 @@ const EditProduct = () => {
 
 				<div className="flex gap-4">
 					<button
-						type="submit"
-						className="bg-blue-600 text-white px-4 py-2 rounded"
+						disabled={loading}
+						className={`px-4 py-2 rounded text-white ${
+							loading ? "bg-gray-400" : "bg-green-600"
+						}`}
 					>
-						Update Product
+						{loading ? "Processing..." : "Submit"}
 					</button>
 
 					<button

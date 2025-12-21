@@ -131,11 +131,12 @@ const CreateProduct = () => {
 
 				<div className="flex gap-4">
 					<button
-						type="submit"
 						disabled={loading}
-						className="bg-green-600 text-white px-4 py-2 rounded"
+						className={`px-4 py-2 rounded text-white ${
+							loading ? "bg-gray-400" : "bg-green-600"
+						}`}
 					>
-						{loading ? "Creating..." : "Create Product"}
+						{loading ? "Processing..." : "Submit"}
 					</button>
 
 					<button

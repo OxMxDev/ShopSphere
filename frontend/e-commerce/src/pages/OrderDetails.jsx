@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getOrderById } from "../api/order.api";
+import Loader from "../components/ui/Loader";
 
 const OrderDetails = () => {
 	const { id } = useParams();
@@ -21,7 +22,7 @@ const OrderDetails = () => {
 			});
 	}, [id]);
 
-	if (loading) return <p>Loading order...</p>;
+	if (loading) return <Loader />;
 	if (error) return <p>{error}</p>;
 
 	return (

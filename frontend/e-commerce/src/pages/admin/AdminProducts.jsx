@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllProducts, deleteProduct } from "../../api/product.api";
-
+import Badge from "../../components/ui/Badege";
+import Loader from "../../components/ui/Loader";
 const AdminProducts = () => {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -33,7 +34,7 @@ const AdminProducts = () => {
 		}
 	};
 
-	if (loading) return <p>Loading products...</p>;
+	if (loading) return <Loader />;
 
 	return (
 		<div className="p-6">
@@ -73,6 +74,13 @@ const AdminProducts = () => {
 								>
 									Delete
 								</button>
+							</td>
+							<td>
+								{product.stock > 0 ? (
+									<Badge text="In Stock" type="success" />
+								) : (
+									<Badge text="Out of Stock" type="danger" />
+								)}
 							</td>
 						</tr>
 					))}

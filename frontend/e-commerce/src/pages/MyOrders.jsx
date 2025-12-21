@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { getUserOrders } from "../api/order.api";
 import { useNavigate } from "react-router-dom";
-
+import Badge from "../components/ui/Badege";
+import Loader from "../components/ui/Loader";
 const MyOrders = () => {
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -21,7 +22,7 @@ const MyOrders = () => {
 			});
 	}, []);
 
-	if (loading) return <p>Loading orders...</p>;
+	if (loading) return <Loader />;
 	if (error) return <p>{error}</p>;
 
 	if (orders.length === 0) {
@@ -48,15 +49,11 @@ const MyOrders = () => {
 					{orders.map((order) => (
 						<tr key={order._id} className="text-center">
 							<td className="border p-2">{order._id.slice(-6)}</td>
-
 							<td className="border p-2">
 								{new Date(order.createdAt).toLocaleDateString()}
 							</td>
-
 							<td className="border p-2">₹{order.totalPrice}</td>
-
 							<td className="border p-2">{order.isPaid ? "Yes" : "No"}</td>
-
 							<td className="border p-2">
 								{order.isDelievered ? "Yes" : "No"}
 							</td>
@@ -68,6 +65,20 @@ const MyOrders = () => {
 								>
 									View
 								</button>
+							</td>
+							<td>
+								{order.isPaid ? (
+									<Badge text="Paid" type="success" />
+								) : (
+									<Badge text="Unpaid" type="warning" />
+								)}
+							</td>
+							<td>
+								{order.isDelievered ? (
+									<Badge text="Delivered" type="success" />
+								) : (
+									<Badge text="Pending" type="info" />
+								)}
 							</td>
 						</tr>
 					))}
