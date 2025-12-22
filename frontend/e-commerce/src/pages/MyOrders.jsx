@@ -27,7 +27,14 @@ const MyOrders = () => {
 	if (error) return <p>{error}</p>;
 
 	if (orders.length === 0) {
-		return <p>You have no orders yet.</p>;
+		return (
+			<div className="text-center py-10">
+				<p className="text-lg font-semibold">No orders yet</p>
+				<p className="text-gray-500 mt-2">
+					Place your first order to see it here.
+				</p>
+			</div>
+		);
 	}
 
 	return (

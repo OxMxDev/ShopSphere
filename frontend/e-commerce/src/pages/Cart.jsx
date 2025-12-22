@@ -4,7 +4,14 @@ const Cart = () => {
 	const { cartItems, removeFromCart, increaseQty, decreaseQty } = useCart();
 
 	if (cartItems.length === 0) {
-		return <p>Your cart is empty</p>;
+		return (
+			<div className="text-center py-10">
+				<p className="text-lg font-semibold">Your cart is empty</p>
+				<p className="text-gray-500 mt-2">
+					Browse products and add items to your cart.
+				</p>
+			</div>
+		);
 	}
 
 	const total = cartItems.reduce((sum, item) => {
