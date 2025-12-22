@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getOrderById } from "../api/order.api";
 import Loader from "../components/ui/Loader";
-
+import PageContainer from "../components/layout/PageContainer";
 const OrderDetails = () => {
 	const { id } = useParams();
 
@@ -26,6 +26,7 @@ const OrderDetails = () => {
 	if (error) return <p>{error}</p>;
 
 	return (
+		<PageContainer>
 		<div className="p-6 max-w-3xl mx-auto">
 			<h1 className="text-2xl font-bold mb-4">Order Details</h1>
 
@@ -107,6 +108,7 @@ const OrderDetails = () => {
 				</div>
 			</div>
 		</div>
+		</PageContainer>
 	);
 };
 

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getProductById, updateProduct } from "../../api/product.api";
 import Loader from "../../components/ui/Loader";
 import toast from "react-hot-toast";
-
+import PageContainer from "../../components/layout/PageContainer";
 const EditProduct = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -70,6 +70,7 @@ const EditProduct = () => {
 	if (error) return <p>{error}</p>;
 
 	return (
+		<PageContainer>
 		<div className="p-6 max-w-2xl mx-auto">
 			<h1 className="text-2xl font-bold mb-4">Edit Product</h1>
 
@@ -148,6 +149,7 @@ const EditProduct = () => {
 				</div>
 			</form>
 		</div>
+		</PageContainer>
 	);
 };
 

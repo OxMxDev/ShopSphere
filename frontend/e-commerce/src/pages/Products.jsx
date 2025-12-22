@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAllProducts } from "../api/product.api";
 import ProductCard from "../components/product/ProductCard";
 import Loader from "../components/ui/Loader";
+import PageContainer from "../components/layout/PageContainer";
 const Products = () => {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -24,6 +25,7 @@ const Products = () => {
 	if (loading) return <Loader />;
 	if (error) return <div>{error}</div>;
 	return (
+		<PageContainer>
 		<div className="flex flex-wrap gap-4">
 			{products.length === 0 ? (
 				<p>No products found</p>
@@ -33,6 +35,7 @@ const Products = () => {
 				))
 			)}
 		</div>
+		</PageContainer>
 	);
 };
 

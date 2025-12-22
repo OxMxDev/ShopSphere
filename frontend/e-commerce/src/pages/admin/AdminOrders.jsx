@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllOrders, updateOrderToDelivered } from "../../api/order.api";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/ui/Loader";
-
+import PageContainer from "../../components/layout/PageContainer";
 const AdminOrders = () => {
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -26,6 +26,7 @@ const AdminOrders = () => {
 	if (loading) return <Loader />;
 
 	return (
+		<PageContainer>
 		<div className="p-6">
 			<h1 className="text-2xl font-bold mb-4">Admin Orders</h1>
 
@@ -73,6 +74,7 @@ const AdminOrders = () => {
 				</tbody>
 			</table>
 		</div>
+		</PageContainer>
 	);
 };
 

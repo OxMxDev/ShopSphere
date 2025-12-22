@@ -4,7 +4,7 @@ import { useState } from "react";
 import {useParams} from "react-router-dom";
 import { getProductById } from "../api/product.api";
 import { useCart } from "../context/cartContext";
-
+import PageContainer from "../components/layout/PageContainer";
 const ProductDetails = () => {
     const [product,setProduct] = useState(null);
     const [loading,setLoading] = useState(true);
@@ -37,6 +37,7 @@ const ProductDetails = () => {
     }
 	return (
 		<>
+			<PageContainer>
 			<div className="max-w-4xl mx-auto p-6">
 				<img
 					src={product.images?.[0]}
@@ -75,6 +76,7 @@ const ProductDetails = () => {
 					</button>
 				</div>
 			</div>
+			</PageContainer>
 		</>
 	);
 };

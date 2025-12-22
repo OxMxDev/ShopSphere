@@ -1,5 +1,5 @@
 import { useCart } from "../context/cartContext";
-
+import PageContainer from "../components/layout/PageContainer";
 const Cart = () => {
 	const { cartItems, removeFromCart, increaseQty, decreaseQty } = useCart();
 
@@ -14,6 +14,7 @@ const Cart = () => {
 
 
 	return (
+		<PageContainer>
 		<div className="p-6">
 			<h2 className="text-xl font-bold mb-4">Cart</h2>
 
@@ -45,6 +46,7 @@ const Cart = () => {
 
 			<h3 className="font-semibold mt-4">Total: ₹{total}</h3>
 		</div>
+		</PageContainer>
 	);
 };
 

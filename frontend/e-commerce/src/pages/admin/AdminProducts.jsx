@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getAllProducts, deleteProduct } from "../../api/product.api";
 import Badge from "../../components/ui/Badege";
 import Loader from "../../components/ui/Loader";
+import PageContainer from "../../components/layout/PageContainer";
 const AdminProducts = () => {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ const AdminProducts = () => {
 	if (loading) return <Loader />;
 
 	return (
+		<PageContainer>
 		<div className="p-6">
 			<h1 className="text-2xl font-bold mb-4">Admin Products</h1>
 
@@ -87,6 +89,7 @@ const AdminProducts = () => {
 				</tbody>
 			</table>
 		</div>
+		</PageContainer>
 	);
 };
 

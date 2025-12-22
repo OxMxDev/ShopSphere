@@ -1,6 +1,7 @@
 import React, { useState} from "react";
 import { loginUser, getCurrentUser } from "../api/auth.api";
 import {useNavigate} from "react-router-dom"
+import PageContainer from "../components/layout/PageContainer";
 const Login = ({onLoginSuccess}) => {
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
@@ -20,6 +21,7 @@ const Login = ({onLoginSuccess}) => {
 
 	return (
 		<>
+			<PageContainer>
 			<div className="w-[300px] h-[600px] flex flex-col gap-4 justify-center ">
 				<p>E-commerce store</p>
 				<p>Login</p>
@@ -49,6 +51,7 @@ const Login = ({onLoginSuccess}) => {
 					</button>
 				</form>
 			</div>
+			</PageContainer>
 		</>
 	);
 };

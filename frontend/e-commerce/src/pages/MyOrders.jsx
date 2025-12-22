@@ -3,6 +3,7 @@ import { getUserOrders } from "../api/order.api";
 import { useNavigate } from "react-router-dom";
 import Badge from "../components/ui/Badege";
 import Loader from "../components/ui/Loader";
+import PageContainer from "../components/layout/PageContainer";
 const MyOrders = () => {
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -30,6 +31,7 @@ const MyOrders = () => {
 	}
 
 	return (
+		<PageContainer>
 		<div className="p-6 max-w-4xl mx-auto">
 			<h1 className="text-2xl font-bold mb-4">My Orders</h1>
 
@@ -85,6 +87,7 @@ const MyOrders = () => {
 				</tbody>
 			</table>
 		</div>
+		</PageContainer>
 	);
 };
 
