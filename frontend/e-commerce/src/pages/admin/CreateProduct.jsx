@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../api/product.api";
-
+import PageContainer from "../../components/layout/PageContainer";
 const CreateProduct = () => {
 	const navigate = useNavigate();
 
@@ -57,6 +57,7 @@ const CreateProduct = () => {
 	};
 
 	return (
+		<PageContainer>
 		<div className="p-6 max-w-2xl mx-auto">
 			<h1 className="text-2xl font-bold mb-4">Create Product</h1>
 
@@ -149,6 +150,7 @@ const CreateProduct = () => {
 				</div>
 			</form>
 		</div>
+		</PageContainer>
 	);
 };
 
