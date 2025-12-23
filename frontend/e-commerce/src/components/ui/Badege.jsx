@@ -5,6 +5,7 @@ const Badge = ({ text, type = "default" }) => {
 		warning: "bg-yellow-100 text-yellow-700",
 		info: "bg-blue-100 text-blue-700",
 		default: "bg-gray-100 text-gray-700",
+		dashboard: "p-4 border bg-white rounded-2xl shadow-xl",
 	};
 
 	return (

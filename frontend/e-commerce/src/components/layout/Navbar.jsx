@@ -8,8 +8,10 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
 			<PageContainer>
 				{!isAuthenticated && <p>Please login</p>}
 				{isAuthenticated && user?.role == "admin" && (
-					<ul className="flex gap-4">
-						<li>Dashboard</li>
+					<ul className="flex gap-4 bg-white rounded-xl p-6 shadow-md w-full">
+						<Link to="/admin/dashboard" className="hover:{shadow-md border}">
+							Dashboard
+						</Link>
 						<Link to="/admin/products">Manage Products</Link>
 						<Link to="/admin/orders">Manage Orders</Link>
 						<Link to="/admin/products/create">Create Product</Link>
