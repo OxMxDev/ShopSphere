@@ -5,10 +5,10 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
 	const { cartItems } = useCart();
 	return (
 		<>
-			<PageContainer>
+			
 				{!isAuthenticated && <p>Please login</p>}
 				{isAuthenticated && user?.role == "admin" && (
-					<ul className="flex gap-4 bg-white rounded-xl p-6 shadow-md w-full">
+					<ul className="flex gap-4 relative rounded-xl p-6 shadow-mdw-full">
 						<Link
 							to="/admin/dashboard"
 							className="hover:scale-105 transition-all hover:shadow-lg hover:bg-gray-100 rounded-lg p-2"
@@ -30,7 +30,7 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
 						>
 							Create Product
 						</Link>
-						<li onClick={onLogout} style={{ cursor: "pointer" }} className="hover:scale-105 transition-all hover:shadow-lg hover:bg-gray-100 rounded-lg p-2">
+						<li onClick={onLogout} style={{ cursor: "pointer" }} className="hover:scale-105 transition-all hover:shadow-lg hover:bg-red-100 rounded-lg p-2 absolute right-6 text-red-500">
 							Logout
 						</li>
 						{console.log("Navbar render:", { isAuthenticated, user })}
@@ -47,7 +47,6 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
 						</li>
 					</ul>
 				)}
-			</PageContainer>
 		</>
 	);
 };

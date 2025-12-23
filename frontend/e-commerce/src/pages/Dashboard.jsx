@@ -29,7 +29,7 @@ const Dashboard = () => {
     },[])
   return (
 		<div className="flex flex-col gap-4 p-6">
-			<p className="text-3xl">Dashboard Overview</p>
+			<p className="text-3xl pl-3">Dashboard Overview</p>
 			<ul className="flex w-full gap-6 p-4 rounded-lg">
 				<li className="p-6 w-[20%] bg-white rounded-2xl relative shadow-xl text-gray-400">
 					Total Products
