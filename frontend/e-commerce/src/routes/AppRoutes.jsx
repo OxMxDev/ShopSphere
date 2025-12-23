@@ -12,9 +12,18 @@ import AdminOrders from "../pages/admin/AdminOrders";
 import EditProduct from "../pages/admin/EditProduct";
 import AdminProducts from "../pages/admin/AdminProducts";
 import CreateProduct from "../pages/admin/CreateProduct";
+import Dashboard from "../pages/Dashboard";
 const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 	return (
 		<Routes>
+			<Route
+				path="/admin/dashboard"
+				element={
+					<ProtectedRoute isAuthenticated={isAuthenticated} adminOnly>
+						<Dashboard />
+					</ProtectedRoute>
+				}
+			/>
 			<Route
 				path="/login"
 				element={<Login onLoginSuccess={onLoginSuccess} />}

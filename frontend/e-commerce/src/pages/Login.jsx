@@ -20,39 +20,43 @@ const Login = ({onLoginSuccess}) => {
 	};
 
 	return (
-		<>
+		<div className="flex">
 			<PageContainer>
-			<div className="w-[300px] h-[600px] flex flex-col gap-4 justify-center ">
-				<p>E-commerce store</p>
-				<p>Login</p>
-				<form action="" autoComplete="on">
-					<label htmlFor="email">Email</label>
-					<input
-						className="border rounded-lg"
-						type="text"
-						id="email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-					<label htmlFor="password">Password</label>
-					<input
-						className="border rounded-lg"
-						type="password"
-						id="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-					/>
-
-					<button
-						className="cursor-pointer bg-blue-500 w-[200px] rounded-lg text-white p-2"
-						onClick={handleSubmit}
+				<div className="w-[500px] h-[600px] bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-4 justify-center  items-center">
+					<p>E-commerce store</p>
+					<p>Login</p>
+					<form
+						action=""
+						autoComplete="on"
+						className="flex flex-col gap-4 w-[80%]"
 					>
-						Login
-					</button>
-				</form>
-			</div>
+						<label htmlFor="email">Email</label>
+						<input
+							className="border rounded-lg p-2"
+							type="text"
+							id="email"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+						/>
+						<label htmlFor="password">Password</label>
+						<input
+							className="border rounded-lg p-2"
+							type="password"
+							id="password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+						/>
+
+						<button
+							className="cursor-pointer bg-blue-500 w-[350px] rounded-lg text-white p-2"
+							onClick={handleSubmit}
+						>
+							Login
+						</button>
+					</form>
+				</div>
 			</PageContainer>
-		</>
+		</div>
 	);
 };
 

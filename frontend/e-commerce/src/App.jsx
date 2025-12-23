@@ -4,10 +4,12 @@ import { getCurrentUser } from "./api/auth.api";
 import AppRoutes from "./routes/AppRoutes";
 import { logoutUser } from "./api/auth.api.js";
 import {Toaster} from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   useEffect(()=>{
           getCurrentUser().then((res)=>{
               console.log("User already logged in",res.data);
@@ -37,6 +39,7 @@ function App() {
       const handleLoginSuccess = async () => {
 				const res = await getCurrentUser();
 				setUser(res.data.data);
+        navigate("/admin/dashboard")
 				setIsAuthenticated(true);
 			};
 
