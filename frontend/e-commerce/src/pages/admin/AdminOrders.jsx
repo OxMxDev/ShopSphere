@@ -3,6 +3,8 @@ import { getAllOrders, updateOrderToDelivered } from "../../api/order.api";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/ui/Loader";
 import PageContainer from "../../components/layout/PageContainer";
+import { CgDetailsMore } from "react-icons/cg";
+import Badge from "../../components/ui/Badege";
 const AdminOrders = () => {
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -30,34 +32,34 @@ const AdminOrders = () => {
 		<div className="p-6">
 			<h1 className="text-2xl font-bold mb-4">Admin Orders</h1>
 
-			<table className="w-full border">
+			<table className="w-full">
 				<thead className="bg-gray-100">
 					<tr>
-						<th className="border p-2">User</th>
-						<th className="border p-2">Email</th>
-						<th className="border p-2">Total</th>
-						<th className="border p-2">Paid</th>
-						<th className="border p-2">Delivered</th>
-						<th className="border p-2">Actions</th>
+						<th className="p-2">User</th>
+						<th className="p-2">Email</th>
+						<th className="p-2">Total</th>
+						<th className="p-2">Paid</th>
+						<th className="p-2">Delivered</th>
+						<th className="p-2">Actions</th>
 					</tr>
 				</thead>
 
 				<tbody>
 					{orders.map((order) => (
 						<tr key={order._id} className="text-center">
-							<td className="border p-2">{order.user?.name}</td>
-							<td className="border p-2">{order.user?.email}</td>
-							<td className="border p-2">₹{order.totalPrice}</td>
-							<td className="border p-2">{order.isPaid ? "Yes" : "No"}</td>
-							<td className="border p-2">
-								{order.isDelievered ? "Yes" : "No"}
+							<td className="p-2">{order.user?.name}</td>
+							<td className="p-2">{order.user?.email}</td>
+							<td className="p-2">₹{order.totalPrice}</td>
+							<td className="p-2">{order.isPaid ? <Badge type="success" text="Paid" /> : <Badge type="danger" text="Pending" />}</td>
+							<td className="p-2">
+								{order.isDelievered ? <Badge type="success" text="Delivered" /> : <Badge type="danger" text="Pending" />}
 							</td>
-							<td className="border p-2 flex gap-2 justify-center">
+							<td className="p-2 flex gap-2 justify-center">
 								<button
 									onClick={() => navigate(`/order/${order._id}`)}
-									className="text-blue-600 underline"
+									className="text-blue-600 underline cursor-pointer"
 								>
-									View
+									<CgDetailsMore size={20} />
 								</button>
 
 								{!order.isDelievered && (
