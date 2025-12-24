@@ -1,5 +1,6 @@
 import { useCart } from "../context/cartContext";
 import PageContainer from "../components/layout/PageContainer";
+import { FaBox } from "react-icons/fa";
 const Cart = () => {
 	const { cartItems, removeFromCart, increaseQty, decreaseQty } = useCart();
 
@@ -10,6 +11,7 @@ const Cart = () => {
 				<p className="text-gray-500 mt-2">
 					Browse products and add items to your cart.
 				</p>
+				<FaBox size={50} className="mx-auto mt-4 text-gray-400" />
 			</div>
 		);
 	}
