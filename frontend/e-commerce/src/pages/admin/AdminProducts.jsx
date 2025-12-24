@@ -4,6 +4,8 @@ import { getAllProducts, deleteProduct } from "../../api/product.api";
 import Badge from "../../components/ui/Badege";
 import Loader from "../../components/ui/Loader";
 import PageContainer from "../../components/layout/PageContainer";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 const AdminProducts = () => {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -39,56 +41,67 @@ const AdminProducts = () => {
 
 	return (
 		<PageContainer>
-		<div className="p-6">
-			<h1 className="text-2xl font-bold mb-4">Admin Products</h1>
+			<div className="p-6">
+				<h1 className="text-2xl font-bold mb-4">Admin Products</h1>
 
-			<table className="w-full border">
-				<thead className="bg-gray-100">
-					<tr>
-						<th className="border p-2">Name</th>
-						<th className="border p-2">Price</th>
-						<th className="border p-2">Stock</th>
-						<th className="border p-2">Category</th>
-						<th className="border p-2">Actions</th>
-					</tr>
-				</thead>
-
-				<tbody>
-					{products.map((product) => (
-						<tr key={product._id} className="text-center">
-							<td className="border p-2">{product.name}</td>
-							<td className="border p-2">₹{product.price}</td>
-							<td className="border p-2">{product.stock}</td>
-							<td className="border p-2">{product.category}</td>
-							<td className="border p-2 flex gap-3 justify-center">
-								<button
-									onClick={() =>
-										navigate(`/admin/products/${product._id}/edit`)
-									}
-									className="text-blue-600 underline"
-								>
-									Edit
-								</button>
-
-								<button
-									onClick={() => handleDelete(product._id)}
-									className="text-red-600 underline"
-								>
-									Delete
-								</button>
-							</td>
-							<td>
-								{product.stock > 0 ? (
-									<Badge text="In Stock" type="success" />
-								) : (
-									<Badge text="Out of Stock" type="danger" />
-								)}
-							</td>
+				<table className="w-full overflow-hidden bg-white rounded-lg shadow-xl">
+					<thead className="bg-gray-100">
+						<tr>
+							<th className="p-2">Product</th>
+							<th className="p-2">Description</th>
+							<th className="p-2">Name</th>
+							<th className="p-2">Category</th>
+							<th className="p-2">Price</th>
+							<th className="p-2">Stock</th>
+							<th className="p-2">Actions</th>
+							<th className="p-2">Status</th>
 						</tr>
-					))}
-				</tbody>
-			</table>
-		</div>
+					</thead>
+
+					<tbody className="shadow-xl bg-white">
+						{products.map((product) => (
+							<tr key={product._id} className="text-center">
+								<td className=" p-2">
+									<img
+										src={product.images[0]}
+										alt={product.name}
+										className="w-16 h-16 object-cover mx-auto"
+									/>
+								</td>
+								<td className=" p-2">{product.description}</td>
+								<td className=" p-2">{product.name}</td>
+								<td className=" p-2">{product.category}</td>
+								<td className=" p-2">₹{product.price}</td>
+								<td className=" p-2">{product.stock}</td>
+								<td className="  p-2 mx-auto flex gap-4 justify-center">
+									<button
+										onClick={() =>
+											navigate(`/admin/products/${product._id}/edit`)
+										}
+										className="text-blue-600 underline mt-4 cursor-pointer"
+									>
+										<FaEdit />
+									</button>
+
+									<button
+										onClick={() => handleDelete(product._id)}
+										className="text-red-600 underline mt-4 cursor-pointer"
+									>
+										<MdDelete />
+									</button>
+								</td>
+								<td>
+									{product.stock > 0 ? (
+										<Badge text="In Stock" type="success" />
+									) : (
+										<Badge text="Out of Stock" type="danger" />
+									)}
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
 		</PageContainer>
 	);
 };
