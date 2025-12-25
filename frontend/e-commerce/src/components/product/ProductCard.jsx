@@ -9,9 +9,9 @@ const ProductCard = ({ product }) => {
 				className="w-full h-60 object-cover rounded"
 			/>
 
-			<h3 className="font-bold mt-2">{product.name}</h3>
+			<h3 className="font-semibold mt-2">{product.name}</h3>
 			<p className="text-sm text-gray-600 truncate">{product.description}</p>
-
+			<p className=" ">Rating {product.ratings}⭐</p>
 			<p className="font-semibold mt-1">₹{product.price}</p>
 		</div>
 		</Link>

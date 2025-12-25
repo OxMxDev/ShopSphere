@@ -37,21 +37,20 @@ const ProductDetails = () => {
     }
 	return (
 		<>
-			<PageContainer>
-			<div className="max-w-4xl mx-auto p-6">
+			
+			<div className="flex pl-5">
 				<img
 					src={product.images?.[0]}
 					alt={product.name}
-					className="w-full  h-106 object-contain rounded"
+					className="  h-106 object-contain rounded-lg"
 				/>
-
-				<h1 className="text-2xl font-bold mt-4">{product.name}</h1>
+				<div className="flex flex-col ml-6 gap-3">
+				<h1 className="text-2xl uppercase mt-4">{product.name}</h1>
 				<p className="text-gray-600 mt-2">{product.description}</p>
 
-				<p className="text-green-600 text-xl font-semibold mt-2">
+				<p className="text-xl font-semibold mt-2">
 					₹{product.price}
 				</p>
-
 				<div className="mt-4">
 					<p>
 						<strong>Brand:</strong> {product.brand}
@@ -60,7 +59,7 @@ const ProductDetails = () => {
 						<strong>Category:</strong> {product.category}
 					</p>
 					<p>
-						<strong>Stock:</strong> {product.stock}
+						<strong>Stock:</strong> {product.stock} available
 					</p>
 					<p>
 						<strong>Rating:</strong> ⭐ {product.ratings}
@@ -70,13 +69,14 @@ const ProductDetails = () => {
 							console.log("Add to cart clicked", product);
 							addToCart(product);
 						}}
-						className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+						className="mt-4 bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
 					>
 						Add to Cart
 					</button>
 				</div>
+
+				</div>
 			</div>
-			</PageContainer>
 		</>
 	);
 };
