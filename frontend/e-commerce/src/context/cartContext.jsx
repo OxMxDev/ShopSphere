@@ -33,6 +33,7 @@ export const CartProvider = ({ children }) => {
 		setCartItems(res.data.data.items);
 	};
 
+
 	const decreaseQty = async (productId, currentQty) => {
 		if (currentQty === 1) {
 			await removeProductFromCart(productId);

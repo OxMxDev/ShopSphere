@@ -13,5 +13,8 @@ export const getUserCart = () => {
 }
 
 export const updateCartItemQty = (productId, qty) => {
-    return axiosInstance.post("/cart/update", { productId, qty });
-}
+	return axiosInstance.post("/cart/update", {
+		productId,
+		qty,
+	});
+};
