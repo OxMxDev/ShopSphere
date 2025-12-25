@@ -53,6 +53,7 @@ const Login = ({onLoginSuccess}) => {
 						>
 							Login
 						</button>
+						<p>Don't have an account? <a href="/register" className="text-blue-600 font-bold">Sign Up</a></p>
 					</form>
 				</div>
 			</PageContainer>
