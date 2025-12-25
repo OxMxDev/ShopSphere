@@ -42,32 +42,34 @@ const MyOrders = () => {
 		<div className="p-6 max-w-4xl mx-auto">
 			<h1 className="text-2xl font-bold mb-4">My Orders</h1>
 
-			<table className="w-full border">
+			<table className="w-full">
 				<thead className="bg-gray-100">
 					<tr>
-						<th className="border p-2">Order ID</th>
-						<th className="border p-2">Date</th>
-						<th className="border p-2">Total</th>
-						<th className="border p-2">Paid</th>
-						<th className="border p-2">Delivered</th>
-						<th className="border p-2">Details</th>
+						<th className="p-2">Order ID</th>
+						<th className="p-2">Date</th>
+						<th className="p-2">Total</th>
+						<th className="p-2">Paid</th>
+						<th className="p-2">Delivered</th>
+						<th className="p-2">Details</th>
+						<th className="p-2">Payment Status</th>
+						<th className="p-2">Delivery Status</th>
 					</tr>
 				</thead>
 
 				<tbody>
 					{orders.map((order) => (
 						<tr key={order._id} className="text-center">
-							<td className="border p-2">{order._id.slice(-6)}</td>
-							<td className="border p-2">
+							<td className="p-2">{order._id.slice(-6)}</td>
+							<td className="p-2">
 								{new Date(order.createdAt).toLocaleDateString()}
 							</td>
-							<td className="border p-2">₹{order.totalPrice}</td>
-							<td className="border p-2">{order.isPaid ? "Yes" : "No"}</td>
-							<td className="border p-2">
+							<td className="p-2">₹{order.totalPrice}</td>
+							<td className="p-2">{order.isPaid ? "Yes" : "No"}</td>
+							<td className="p-2">
 								{order.isDelievered ? "Yes" : "No"}
 							</td>
 
-							<td className="border p-2">
+							<td className="p-2">
 								<button
 									onClick={() => navigate(`/order/${order._id}`)}
 									className="text-blue-600 underline"

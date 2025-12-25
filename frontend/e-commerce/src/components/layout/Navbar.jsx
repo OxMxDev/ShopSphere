@@ -46,26 +46,33 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
 				<ul className="flex gap-4 relative rounded-xl p-6 shadow-mdw-full">
 					<Link
 						to="/checkout"
-						className="hover:scale-105 transition-all hover:shadow-lg hover:bg-gray-100 rounded-lg p-2"
+						className="hover:scale-105 transition-all hover:shadow-lg hover:text-blue-400 hover:border-b hover:border-b-blue-400 rounded-lg p-2"
 					>
 						Checkout
 					</Link>
 					<Link
 						to="/products"
-						className="hover:scale-105 transition-all hover:shadow-lg hover:bg-gray-100 rounded-lg p-2"
+						className="hover:scale-105 hover:text-blue-400 hover:border-b hover:border-b-blue-400 transition-all hover:shadow-lg  rounded-lg p-2"
 					>
-						Products
+						Shop
 					</Link>
 					<Link
 						to="/cart"
-						className="hover:scale-105 transition-all hover:shadow-lg hover:bg-gray-100 rounded-lg p-2"
+						className="hover:scale-105 hover:text-blue-400 hover:border-b hover:border-b-blue-400 transition-all hover:shadow-lg  rounded-lg p-2"
 					>
 						Cart ({cartItems.length})
 					</Link>
-					<Link to="/my-orders" className="hover:scale-105 transition-all hover:shadow-lg hover:bg-gray-100 rounded-lg p-2">
+					<Link
+						to="/my-orders"
+						className="hover:scale-105 transition-all hover:shadow-lg hover:text-blue-400 hover:border-b hover:border-b-blue-400 rounded-lg p-2"
+					>
 						My Orders
 					</Link>
-					<li onClick={onLogout} style={{ cursor: "pointer" }} className="hover:scale-105 transition-all hover:shadow-lg hover:bg-red-100 rounded-lg p-2 absolute right-6 text-red-500">
+					<li
+						onClick={onLogout}
+						style={{ cursor: "pointer" }}
+						className="hover:scale-105 transition-all hover:shadow-lg hover:text-red-400 hover:border-b hover:border-b-red-400 rounded-lg p-2 absolute right-6 "
+					>
 						Logout
 					</li>
 				</ul>
