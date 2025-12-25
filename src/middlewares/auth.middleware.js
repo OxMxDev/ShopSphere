@@ -5,6 +5,11 @@ import { ApiError } from "../utils/ApiError.js";
 
 export const verifyJWT = asyncHandler(async(req,_,next)=>{
     try{
+        console.log("Full URL:", req.originalUrl);
+				console.log("Path:", req.path);
+				console.log("Base URL:", req.baseUrl);
+				console.log("IP:", req.ip);
+				console.log("Origin:", req.get("origin"));
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ","")
         if(!token){
             throw new ApiError(401,"Unauthorized Error")
@@ -14,7 +19,6 @@ export const verifyJWT = asyncHandler(async(req,_,next)=>{
         const user = await User.findById(decodedToken?._id).select("-password -refreshToken")
 
         if(!user){
-            // discuss about frontend
             throw new ApiError(401,"Invalid access token")
         }
 

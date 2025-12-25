@@ -5,9 +5,10 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 const createReview = asyncHandler(async (req, res) => {
-	const { productId, rating, comment } = req.body;
-
-	if (!productId || !rating) {
+	const { productId } = req.params;
+	const { rating, comment } = req.body;
+	console.log("Creating review for productId:", productId);
+	if (!rating || !comment) {
 		throw new ApiError(400, "Product ID and rating are required");
 	}
 
@@ -28,7 +29,6 @@ const createReview = asyncHandler(async (req, res) => {
 	if (existingReview) {
 		throw new ApiError(400, "You have already reviewed this product");
 	}
-
 	const review = await Review.create({
 		product: productId,
 		user: req.user._id,
@@ -171,7 +171,7 @@ const updateProductRating = async (productId) => {
 	const averageRating = totalRating / reviews.length;
 
 	await Product.findByIdAndUpdate(productId, {
-		ratings: averageRating.toFixed(1),
+		ratings: Number(averageRating.toFixed(1)),
 		numReviews: reviews.length,
 	});
 };

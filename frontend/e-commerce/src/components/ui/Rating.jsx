@@ -1,29 +1,21 @@
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { FaStar, FaRegStar } from "react-icons/fa";
 
-const Rating = ({ value, text, onRate, editable = false }) => {
-	const handleClick = (rating) => {
-		if (!editable || !onRate) return;
-		onRate(rating);
-	};
-
+const Rating = ({ value = 0, editable = false, onRate }) => {
 	return (
-		<div className="flex items-center gap-1">
+		<div className="flex gap-1">
 			{[1, 2, 3, 4, 5].map((star) => (
 				<span
 					key={star}
-					onClick={() => handleClick(star)}
+					onClick={() => editable && onRate(star)}
 					className={editable ? "cursor-pointer" : ""}
 				>
 					{value >= star ? (
 						<FaStar className="text-yellow-400" />
-					) : value >= star - 0.5 ? (
-						<FaStarHalfAlt className="text-yellow-400" />
 					) : (
 						<FaRegStar className="text-yellow-400" />
 					)}
 				</span>
 			))}
-			{text && <span className="text-sm text-gray-500 ml-1">{text}</span>}
 		</div>
 	);
 };
