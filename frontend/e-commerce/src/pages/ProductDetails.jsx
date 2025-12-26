@@ -7,7 +7,9 @@ import { useCart } from "../context/cartContext";
 import { createReview } from "../api/review.api";
 import Rating from "../components/ui/Rating";
 import { getProductReviews } from "../api/review.api";
+import { useAuth } from "../context/authContext";
 const ProductDetails = () => {
+	const {user, isAuthenticated} = useAuth();
     const [product,setProduct] = useState(null);
 	const [userRating, setUserRating] = useState(0);
 	const [comment, setComment] = useState("");
@@ -15,6 +17,8 @@ const ProductDetails = () => {
 	const [loadingReviews, setLoadingReviews] = useState(true);
     const [loading,setLoading] = useState(true);
     const [error,setError] = useState(null);
+	const [hasReviewed, setHasReviewed] = useState(false);
+
     const {id} = useParams()
     const {addToCart} = useCart();
 
@@ -29,6 +33,16 @@ const ProductDetails = () => {
 			setLoadingReviews(false);
 		}
 	};
+
+	useEffect(() => {
+		if (!reviews.length || !user) return;
+
+		const reviewed = reviews.some(
+			(review) => review.user === user._id || review.user?._id === user._id
+		);
+
+		setHasReviewed(reviewed);
+	}, [reviews, user]);
 
 
 	const refreshRatings = async () => {
@@ -125,25 +139,35 @@ const ProductDetails = () => {
 
 						<h3 className="text-lg font-semibold mt-6">Rate this product</h3>
 
-						<Rating
-							value={userRating}
-							editable
-							onRate={(rating) => setUserRating(rating)}
-						/>
-						<button
-							disabled={loading}
-							onClick={submitRating}
-							className="mt-3 bg-blue-600 text-white px-4 py-2 rounded"
-						>
-							{loading ? "Submitting..." : "Submit Rating"}
-						</button>
-						<textarea
-							className="border p-2 w-full mt-2 rounded"
-							rows={3}
-							placeholder="Write your review (optional)"
-							value={comment}
-							onChange={(e) => setComment(e.target.value)}
-						/>
+						{hasReviewed ? (
+							<p className="text-sm text-gray-500 mt-2">
+								You have already reviewed this product
+							</p>
+						) : (
+							<>
+								<Rating
+									value={userRating}
+									editable
+									onRate={(rating) => setUserRating(rating)}
+								/>
+
+								<textarea
+									className="border p-2 w-full mt-2 rounded"
+									rows={3}
+									placeholder="Write your review (optional)"
+									value={comment}
+									onChange={(e) => setComment(e.target.value)}
+								/>
+
+								<button
+									disabled={loading}
+									onClick={submitRating}
+									className="mt-3 bg-blue-600 text-white px-4 py-2 rounded"
+								>
+									{loading ? "Submitting..." : "Submit Review"}
+								</button>
+							</>
+						)}
 
 						<button
 							onClick={() => {
