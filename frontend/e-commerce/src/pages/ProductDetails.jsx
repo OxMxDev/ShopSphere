@@ -8,6 +8,8 @@ import { createReview } from "../api/review.api";
 import Rating from "../components/ui/Rating";
 import { getProductReviews } from "../api/review.api";
 import { useAuth } from "../context/authContext";
+import { updateReview, deleteReview } from "../api/review.api";
+
 const ProductDetails = () => {
 	const {user, isAuthenticated} = useAuth();
     const [product,setProduct] = useState(null);
@@ -18,6 +20,9 @@ const ProductDetails = () => {
     const [loading,setLoading] = useState(true);
     const [error,setError] = useState(null);
 	const [hasReviewed, setHasReviewed] = useState(false);
+	const [editingReviewId, setEditingReviewId] = useState(null);
+	const [editRating, setEditRating] = useState(0);
+	const [editComment, setEditComment] = useState("");
 
     const {id} = useParams()
     const {addToCart} = useCart();
@@ -43,6 +48,34 @@ const ProductDetails = () => {
 
 		setHasReviewed(reviewed);
 	}, [reviews, user]);
+
+const handleUpdateReview = async (reviewId) => {
+	try {
+		await updateReview(reviewId, editRating, editComment);
+		toast.success("Review updated");
+
+		setEditingReviewId(null);
+		fetchReviews();
+		refreshRatings();
+	} catch (err) {
+		toast.error(err.response?.data?.message || "Update failed");
+	}
+};
+
+const handleDeleteReview = async (reviewId) => {
+	if (!confirm("Delete this review?")) return;
+
+	try {
+		await deleteReview(reviewId);
+		toast.success("Review deleted");
+
+		fetchReviews();
+		refreshRatings();
+	} catch (err) {
+		toast.error(err.response?.data?.message || "Delete failed");
+		console.error("Error deleting review:", err.message);
+	}
+};
 
 
 	const refreshRatings = async () => {
@@ -188,15 +221,79 @@ const ProductDetails = () => {
 						) : reviews.length === 0 ? (
 							<p className="text-gray-500">No reviews yet</p>
 						) : (
-							reviews.map((review) => (
-								<div key={review._id} className="border p-3 mt-2 rounded">
-									<div className="flex justify-between">
-										<strong>{review.name}</strong>
-										<Rating value={review.rating} />
+							reviews.map((review) => {
+								const isOwner =
+									user &&
+									(review.user === user._id || review.user?._id === user._id);
+
+								return (
+									<div key={review._id} className="border p-3 mt-2 rounded">
+										<div className="flex justify-between items-center">
+											<strong>{review.name}</strong>
+											<Rating value={review.rating} />
+										</div>
+
+										{/* EDIT MODE */}
+										{editingReviewId === review._id ? (
+											<div className="mt-2">
+												<Rating
+													value={editRating}
+													editable
+													onRate={(value) => setEditRating(value)}
+												/>
+
+												<textarea
+													className="border p-2 w-full mt-2 rounded"
+													value={editComment}
+													onChange={(e) => setEditComment(e.target.value)}
+												/>
+
+												<div className="flex gap-3 mt-2">
+													<button
+														onClick={() => handleUpdateReview(review._id)}
+														className="bg-green-600 text-white px-3 py-1 rounded"
+													>
+														Save
+													</button>
+
+													<button
+														onClick={() => setEditingReviewId(null)}
+														className="bg-gray-300 px-3 py-1 rounded"
+													>
+														Cancel
+													</button>
+												</div>
+											</div>
+										) : (
+											<>
+												<p className="text-sm mt-1">{review.comment}</p>
+
+												{isOwner && (
+													<div className="flex gap-3 mt-2">
+														<button
+															onClick={() => {
+																setEditingReviewId(review._id);
+																setEditRating(review.rating);
+																setEditComment(review.comment);
+															}}
+															className="text-blue-600 text-sm"
+														>
+															Edit
+														</button>
+
+														<button
+															onClick={() => handleDeleteReview(review._id)}
+															className="text-red-600 text-sm"
+														>
+															Delete
+														</button>
+													</div>
+												)}
+											</>
+										)}
 									</div>
-									<p className="text-sm mt-1">{review.comment}</p>
-								</div>
-							))
+								);
+							})
 						)}
 					</div>
 				</div>
