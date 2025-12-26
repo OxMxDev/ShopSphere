@@ -17,6 +17,18 @@ const ProductDetails = () => {
     const {id} = useParams()
     const {addToCart} = useCart();
 
+	const refreshRatings = async () => {
+		try {
+			const res = await getProductById(id);
+			setProduct(res.data.data);
+		} catch (err) {
+			console.error("Error refreshing ratings:", err.message);
+		}
+	};
+
+	const refreshReviews = async () => {
+		// This function can be implemented to refresh the reviews section if needed
+	};
 	const submitRating = async () => {
 		if (userRating === 0) {
 			toast.error("Please select a rating");
@@ -29,7 +41,8 @@ const ProductDetails = () => {
 			await createReview(product._id, userRating, comment);
 
 			toast.success("Rating submitted successfully");
-
+			refreshRatings(); 
+			refreshReviews(); 
 			setUserRating(0);
 			setComment("");
 
@@ -124,6 +137,9 @@ const ProductDetails = () => {
 						>
 							Add to Cart
 						</button>
+						<p>
+							Review Comment: {comment}
+						</p>
 					</div>
 				</div>
 			</div>

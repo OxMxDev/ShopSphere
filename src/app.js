@@ -13,14 +13,7 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
-app.use((req, res, next) => {
-	console.log("Full URL:", req.originalUrl);
-	console.log("Path:", req.path);
-	console.log("Base URL:", req.baseUrl);
-	console.log("IP:", req.ip);
-	console.log("Origin:", req.get("origin"));
-	next();
-});
+
 console.log("CROS ORIGIN",process.env.CORS_ORIGIN);
 import userRouter from "./routes/user.route.js";
 import productRouter from "./routes/product.route.js";

@@ -9,7 +9,7 @@ const createReview = asyncHandler(async (req, res) => {
 	const { rating, comment } = req.body;
 	console.log("Creating review for productId:", productId);
 	if (!rating || !comment) {
-		throw new ApiError(400, "Product ID and rating are required");
+		throw new ApiError(400, "Rating and comment are required");
 	}
 
 	if (rating < 1 || rating > 5) {
