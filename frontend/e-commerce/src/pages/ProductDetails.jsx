@@ -1,4 +1,3 @@
-import React from "react";
 import { toast } from "react-hot-toast";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -7,15 +6,30 @@ import { getProductById } from "../api/product.api";
 import { useCart } from "../context/cartContext";
 import { createReview } from "../api/review.api";
 import Rating from "../components/ui/Rating";
+import { getProductReviews } from "../api/review.api";
 const ProductDetails = () => {
     const [product,setProduct] = useState(null);
 	const [userRating, setUserRating] = useState(0);
 	const [comment, setComment] = useState("");
-
+	const [reviews, setReviews] = useState([]);
+	const [loadingReviews, setLoadingReviews] = useState(true);
     const [loading,setLoading] = useState(true);
     const [error,setError] = useState(null);
     const {id} = useParams()
     const {addToCart} = useCart();
+
+	const fetchReviews = async () => {
+		if (!product?._id) return; // 🔑 IMPORTANT
+
+		try {
+			setLoadingReviews(true);
+			const res = await getProductReviews(product._id);
+			setReviews(res.data.data);
+		} finally {
+			setLoadingReviews(false);
+		}
+	};
+
 
 	const refreshRatings = async () => {
 		try {
@@ -26,9 +40,13 @@ const ProductDetails = () => {
 		}
 	};
 
-	const refreshReviews = async () => {
-		// This function can be implemented to refresh the reviews section if needed
-	};
+	useEffect(() => {
+		if (product?._id) {
+			fetchReviews();
+		}
+	}, [product?._id]);
+
+
 	const submitRating = async () => {
 		if (userRating === 0) {
 			toast.error("Please select a rating");
@@ -59,7 +77,6 @@ const ProductDetails = () => {
         getProductById(id)
         .then((res)=>{
             setProduct(res.data.data)
-            console.log(res.data.data)
         })
         .catch((err)=>{
             setError(err.message)
@@ -137,9 +154,26 @@ const ProductDetails = () => {
 						>
 							Add to Cart
 						</button>
-						<p>
-							Review Comment: {comment}
-						</p>
+						<p>Review Comment: {comment}</p>
+						<h3 className="text-lg font-semibold mt-6">
+							Reviews ({reviews.length})
+						</h3>
+
+						{loadingReviews ? (
+							<p>Loading reviews...</p>
+						) : reviews.length === 0 ? (
+							<p className="text-gray-500">No reviews yet</p>
+						) : (
+							reviews.map((review) => (
+								<div key={review._id} className="border p-3 mt-2 rounded">
+									<div className="flex justify-between">
+										<strong>{review.name}</strong>
+										<Rating value={review.rating} />
+									</div>
+									<p className="text-sm mt-1">{review.comment}</p>
+								</div>
+							))
+						)}
 					</div>
 				</div>
 			</div>

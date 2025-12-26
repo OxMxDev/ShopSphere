@@ -6,3 +6,7 @@ export const createReview = (productId, rating, comment) => {
 			comment,
 		});
 }
+
+export const getProductReviews = (productId)=>{
+	return axiosInstance.get(`/reviews/getProductReviews/${productId}`);
+}
