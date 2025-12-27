@@ -13,7 +13,7 @@ export const WishlistProvider = ({children})=>{
     const fetchWishlist = async()=>{
         try {
             const res = await getUserWishlist();
-            setWishlist(res.data.data.items || []);
+            setWishlist(res.data.data.products || []);
 
         } catch (error) {
             console.log("Error fetching wishlist",error);

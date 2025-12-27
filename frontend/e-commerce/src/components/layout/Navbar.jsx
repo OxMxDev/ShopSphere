@@ -67,6 +67,12 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
 					>
 						My Orders
 					</Link>
+					<Link
+						to="/wishlist"
+						className="hover:scale-105 transition-all hover:shadow-lg hover:text-blue-400 hover:border-b hover:border-b-blue-400 rounded-lg p-2"
+					>
+						Wishlist
+					</Link>
 					<li
 						onClick={onLogout}
 						style={{ cursor: "pointer" }}

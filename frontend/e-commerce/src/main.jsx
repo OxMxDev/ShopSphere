@@ -8,12 +8,12 @@ import { AuthProvider } from "./context/authContext.jsx";
 import { WishlistProvider } from "./context/wishlistContext.jsx";
 createRoot(document.getElementById("root")).render(
 	<BrowserRouter>
-			<AuthProvider>
-		<WishlistProvider>
+		<AuthProvider>
+			<WishlistProvider>
 				<CartProvider>
 					<App />
 				</CartProvider>
-		</WishlistProvider>
-			</AuthProvider>
+			</WishlistProvider>
+		</AuthProvider>
 	</BrowserRouter>
 );

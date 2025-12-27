@@ -9,22 +9,28 @@ const Wishlist = () => {
 	if (wishlist.length === 0) {
 		return <p className="text-center">Your wishlist is empty</p>;
 	}
-
+    console.log(wishlist);
 	return (
 		<PageContainer>
 			<h2 className="text-xl font-bold mb-4">My Wishlist</h2>
 
-			{wishlist.map(({ product }) => (
-				<div
-					key={product._id}
-					className="border p-4 mb-2 rounded flex justify-between"
-				>
-					<div>
-						<p className="font-semibold">{product.name}</p>
-						<p>₹{product.price}</p>
+			{wishlist.map((item) => {
+				const { product, _id } = item;
+
+				if (!product) return null;
+
+				return (
+					<div
+						key={_id} 
+						className="border p-4 mb-2 rounded flex justify-between"
+					>
+						<div>
+							<p className="font-semibold">{product.name}</p>
+							<p>₹{product.price}</p>
+						</div>
 					</div>
-				</div>
-			))}
+				);
+			})}
 		</PageContainer>
 	);
 };

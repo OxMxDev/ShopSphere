@@ -15,6 +15,6 @@ export const removeFromWishlist = async (productId) => {
 }
 
 export const getUserWishlist = async () => {
-    const response = await axiosInstance.get("/wishlist/getUserWishlist");
+    const response = await axiosInstance.get("/wishlist/getUserWishlist");  
     return response;
 }
