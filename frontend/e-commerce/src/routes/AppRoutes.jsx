@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import Wishlist from "../pages/Wishlist";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
@@ -122,6 +123,14 @@ const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 				element={
 					<ProtectedRoute isAuthenticated={!isAuthenticated}>
 						<SignUp />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/wishlist"
+				element={
+					<ProtectedRoute>
+						<Wishlist />
 					</ProtectedRoute>
 				}
 			/>
