@@ -22,7 +22,6 @@ const Dashboard = () => {
         })
         getAllCategories().then((res)=>{
             setCategories(res.data.data.length)
-            console.log(res.data.data);
         }).catch((err)=>{
             console.log(err);
         })

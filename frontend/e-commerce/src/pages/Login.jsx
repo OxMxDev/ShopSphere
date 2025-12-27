@@ -10,9 +10,7 @@ const Login = ({onLoginSuccess}) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		console.log({ email, password });
         loginUser({email,password}).then((res)=>{
-            console.log(res.data);
             onLoginSuccess();
         }).catch((err)=>{
             console.log(err);

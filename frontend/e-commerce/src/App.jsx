@@ -12,10 +12,8 @@ function App() {
   const navigate = useNavigate();
   useEffect(()=>{
           getCurrentUser().then((res)=>{
-              console.log("User already logged in",res.data);
               setIsAuthenticated(true);
               setUser(res.data.data);
-              console.log("User data",res.data.data);
               setLoading(false);
             }).catch((err)=>{
               console.log("No user logged in",err);

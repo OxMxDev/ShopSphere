@@ -13,7 +13,6 @@ export const CartProvider = ({ children }) => {
         getUserCart()
         .then((res)=>{
             setCartItems(res.data.data.items);
-			console.log("Cart fetched", res.data.data.items);
         })
         .catch((err)=>{
             console.log("Error fetching cart",err);

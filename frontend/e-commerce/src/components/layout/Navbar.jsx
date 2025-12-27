@@ -39,7 +39,6 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
 					>
 						Logout
 					</li>
-					{console.log("Navbar render:", { isAuthenticated, user })}
 				</ul>
 			)}
 			{isAuthenticated && user?.role == "user" && (
