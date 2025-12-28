@@ -14,19 +14,18 @@ const Wishlist = () => {
 		<PageContainer>
 			<h2 className="text-xl font-bold mb-4">My Wishlist</h2>
 
-			{wishlist.map((item) => {
-				const { product, _id } = item;
-
+			{wishlist.map((product) => {
 				if (!product) return null;
 
 				return (
 					<div
-						key={_id} 
+						key={product._id}
 						className="border p-4 mb-2 rounded flex justify-between"
 					>
 						<div>
 							<p className="font-semibold">{product.name}</p>
 							<p>₹{product.price}</p>
+							<p className="text-sm text-gray-500">Stock: {product.stock}</p>
 						</div>
 					</div>
 				);
