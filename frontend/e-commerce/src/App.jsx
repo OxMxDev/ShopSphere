@@ -16,7 +16,7 @@ function App() {
               setUser(res.data.data);
               setLoading(false);
             }).catch((err)=>{
-              console.log("No user logged in",err);
+              console.log("No current user",err);
               setUser(null);
               setIsAuthenticated(false);
               setLoading(false);
@@ -26,9 +26,7 @@ function App() {
       const handleLogout = async() =>{
         try {
           await logoutUser()
-          console.log("Logged out successfully");
         } catch (error) {
-          console.log("Error logging out",error);
         }finally{
           setIsAuthenticated(false);
           setUser(null);

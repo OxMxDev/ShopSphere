@@ -20,7 +20,6 @@ export const CartProvider = ({ children }) => {
     },[]);
     
     const addToCart = async(product)=>{
-		console.log("Adding to cart", product);
         await addProductToCart(product._id,1)
         const res = await getUserCart()
         setCartItems(res.data.data.items)
