@@ -84,6 +84,7 @@ backend/
  │   ├── middlewares/
  │   └── utils/
 
+```
 🔐 Authentication Flow
 
 JWT-based authentication
