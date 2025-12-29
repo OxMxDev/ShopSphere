@@ -1,4 +1,4 @@
-<img width="1919" height="917" alt="Screenshot 2025-12-29 160727" src="https://github.com/user-attachments/assets/f8b04004-7131-4412-aaf7-33abc7afd62b" /># 📦 MERN E-Commerce Platform
+📦 MERN E-Commerce Platform
 
 A full-stack **E-commerce web application** built using the **MERN stack**, featuring authentication, role-based access, product management, cart, orders, wishlist, and reviews.
 
