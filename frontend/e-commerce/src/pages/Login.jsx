@@ -2,18 +2,22 @@ import React, { useState} from "react";
 import { loginUser, getCurrentUser } from "../api/auth.api";
 import {useNavigate} from "react-router-dom"
 import PageContainer from "../components/layout/PageContainer";
+import "./Login.css";
 const Login = ({onLoginSuccess}) => {
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
+	const [error, setError] = useState("");
     let navigate = useNavigate()
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setError(""); 
 
         loginUser({email,password}).then((res)=>{
             onLoginSuccess();
         }).catch((err)=>{
             console.log(err);
+            setError("Email or password is incorrect");
         })
 	};
 
@@ -28,13 +32,22 @@ const Login = ({onLoginSuccess}) => {
 						autoComplete="on"
 						className="flex flex-col gap-4 w-[80%]"
 					>
+						{error && (
+							<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative error-popup" role="alert">
+								<strong className="font-bold">Error! </strong>
+								<span className="block sm:inline">{error}</span>
+							</div>
+						)}
 						<label htmlFor="email">Email</label>
 						<input
 							className="border rounded-lg p-2"
 							type="text"
 							id="email"
 							value={email}
-							onChange={(e) => setEmail(e.target.value)}
+							onChange={(e) => {
+								setEmail(e.target.value);
+								setError(""); 
+							}}
 						/>
 						<label htmlFor="password">Password</label>
 						<input
@@ -42,7 +55,10 @@ const Login = ({onLoginSuccess}) => {
 							type="password"
 							id="password"
 							value={password}
-							onChange={(e) => setPassword(e.target.value)}
+							onChange={(e) => {
+								setPassword(e.target.value);
+								setError(""); 
+							}}
 						/>
 
 						<button
