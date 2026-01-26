@@ -120,11 +120,7 @@ const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 			/>
 			<Route
 				path="/register"
-				element={
-					<ProtectedRoute isAuthenticated={!isAuthenticated}>
-						<SignUp />
-					</ProtectedRoute>
-				}
+				element={<SignUp />}
 			/>
 			<Route
 				path="/wishlist"
