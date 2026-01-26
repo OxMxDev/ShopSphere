@@ -7,7 +7,7 @@ async function connectDB(){
         console.log('MONGODB CONNECTED !! DB HOST', connectionInstance.connection.host)
     }catch(err){
         console.error("MONGODB CONNECTION ERROR: ",err)
-    }
+    } 
 }
 
 export default connectDB;
