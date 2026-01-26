@@ -23,7 +23,7 @@ import orderRouter from "./routes/order.route.js";
 import categoryRouter from "./routes/category.route.js";
 import wishlistRouter from "./routes/wishlist.route.js";
 import reviewRouter from "./routes/review.route.js";
-app.use("/api/v1/users", userRouter);
+app.use("/api/v1/users", userRouter); 
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/admins", adminRouter);
 app.use("/api/v1/cart", cartRouter);
