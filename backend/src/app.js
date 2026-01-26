@@ -34,4 +34,9 @@ app.use(
 	"/api/v1/reviews",
 	reviewRouter
 );
+
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
+});
+
 export { app };
