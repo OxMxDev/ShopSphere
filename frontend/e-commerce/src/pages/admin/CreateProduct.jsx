@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../api/product.api";
 import PageContainer from "../../components/layout/PageContainer";
+import toast from "react-hot-toast";
+
 const CreateProduct = () => {
 	const navigate = useNavigate();
 
@@ -34,7 +36,7 @@ const CreateProduct = () => {
 		e.preventDefault();
 
 		if (!image) {
-			toast.error(error.response?.data?.message || "Something went wrong");
+			toast.error("Please select an image");
 			return;
 		}
 
@@ -50,7 +52,7 @@ const CreateProduct = () => {
 			toast.success("Product created successfully");
 			navigate("/admin/products");
 		} catch (err) {
-			toast.error(error.response?.data?.message || "Something went wrong");
+			toast.error(err.response?.data?.message || "Something went wrong");
 		} finally {
 			setLoading(false);
 		}
