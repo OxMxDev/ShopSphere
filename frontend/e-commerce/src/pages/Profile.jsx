@@ -19,11 +19,19 @@ const Profile = () => {
 
 				<div className="bg-white rounded-xl shadow-sm overflow-hidden">
 					<div className="bg-slate-800 px-6 py-8 text-center">
-						<div className="w-20 h-20 bg-white rounded-full mx-auto flex items-center justify-center mb-4">
-							<span className="text-3xl font-bold text-slate-800">
-								{user.name?.charAt(0).toUpperCase()}
-							</span>
-						</div>
+						{user.avatar ? (
+							<img
+								src={user.avatar}
+								alt={user.name}
+								className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-white"
+							/>
+						) : (
+							<div className="w-24 h-24 bg-white rounded-full mx-auto flex items-center justify-center mb-4">
+								<span className="text-3xl font-bold text-slate-800">
+									{user.name?.charAt(0).toUpperCase()}
+								</span>
+							</div>
+						)}
 						<h2 className="text-xl font-semibold text-white">{user.name}</h2>
 						<p className="text-slate-300 text-sm mt-1">{user.email}</p>
 					</div>

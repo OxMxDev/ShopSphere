@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const Checkout = () => {
-	const { cartItems } = useCart();
+	const { cartItems, clearCart } = useCart();
 	const navigate = useNavigate();
 	const [paymentMethod, setPaymentMethod] = useState("COD");
 	const [address, setAddress] = useState({
@@ -24,7 +24,8 @@ const Checkout = () => {
 	const handlePlaceOrder = async () => {
 		try {
 			const res = await createOrder(orderPayload);
-			console.log("Order created:", res.data);
+			clearCart();
+			toast.success("Order placed successfully!");
 			navigate(`/order/${res.data.data._id}`);
 		} catch (error) {
 			toast.error(error.response?.data?.message || "Something went wrong");
