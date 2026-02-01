@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { getProductById, updateProduct } from "../../api/product.api";
 import Loader from "../../components/ui/Loader";
 import toast from "react-hot-toast";
-import PageContainer from "../../components/layout/PageContainer";
+import { FiArrowLeft } from "react-icons/fi";
+
 const EditProduct = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 
 	const [loading, setLoading] = useState(true);
+	const [saving, setSaving] = useState(false);
 	const [error, setError] = useState(null);
 
 	const [formData, setFormData] = useState({
@@ -20,7 +22,6 @@ const EditProduct = () => {
 		brand: "",
 	});
 
-	// Fetch product details
 	useEffect(() => {
 		const fetchProduct = async () => {
 			try {
@@ -58,98 +59,162 @@ const EditProduct = () => {
 		e.preventDefault();
 
 		try {
+			setSaving(true);
 			await updateProduct(id, formData);
 			toast.success("Product updated successfully");
 			navigate("/admin/products");
 		} catch (err) {
-			toast.error(error.response?.data?.message || "Something went wrong");
+			toast.error(err.response?.data?.message || "Something went wrong");
+		} finally {
+			setSaving(false);
 		}
 	};
 
 	if (loading) return <Loader />;
-	if (error) return <p>{error}</p>;
+	
+	if (error) {
+		return (
+			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
+				<p className="text-gray-500">{error}</p>
+			</div>
+		);
+	}
 
 	return (
-		<PageContainer>
-		<div className="p-6 max-w-2xl mx-auto">
-			<h1 className="text-2xl font-bold mb-4">Edit Product</h1>
+		<div className="min-h-screen bg-gray-50">
+			<div className="max-w-2xl mx-auto px-4 py-8">
+				{/* Back Link */}
+				<Link
+					to="/admin/products"
+					className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 mb-6"
+				>
+					<FiArrowLeft />
+					Back to Products
+				</Link>
 
-			<form onSubmit={handleSubmit} className="flex flex-col gap-4">
-				<input
-					type="text"
-					name="name"
-					placeholder="Product Name"
-					value={formData.name}
-					onChange={handleChange}
-					className="border p-2 rounded"
-				/>
-
-				<input
-					type="number"
-					name="price"
-					placeholder="Price"
-					value={formData.price}
-					onChange={handleChange}
-					className="border p-2 rounded"
-				/>
-
-				<input
-					type="number"
-					name="stock"
-					placeholder="Stock"
-					value={formData.stock}
-					onChange={handleChange}
-					className="border p-2 rounded"
-				/>
-
-				<input
-					type="text"
-					name="brand"
-					placeholder="Brand"
-					value={formData.brand}
-					onChange={handleChange}
-					className="border p-2 rounded"
-				/>
-
-				<input
-					type="text"
-					name="category"
-					placeholder="Category"
-					value={formData.category}
-					onChange={handleChange}
-					className="border p-2 rounded"
-				/>
-
-				<textarea
-					name="description"
-					placeholder="Description"
-					value={formData.description}
-					onChange={handleChange}
-					className="border p-2 rounded"
-					rows={4}
-				/>
-
-				<div className="flex gap-4">
-					<button
-						disabled={loading}
-						className={`px-4 py-2 rounded text-white ${
-							loading ? "bg-gray-400" : "bg-green-600"
-						}`}
-					>
-						{loading ? "Processing..." : "Submit"}
-					</button>
-
-					<button
-						type="button"
-						onClick={() => navigate("/admin/products")}
-						className="bg-gray-300 px-4 py-2 rounded"
-					>
-						Cancel
-					</button>
+				{/* Header */}
+				<div className="mb-8">
+					<h1 className="text-2xl font-bold text-gray-900">Edit Product</h1>
+					<p className="text-gray-500 mt-1">Update product information</p>
 				</div>
-			</form>
+
+				{/* Form */}
+				<div className="bg-white rounded-xl shadow-sm p-6">
+					<form onSubmit={handleSubmit} className="space-y-6">
+						{/* Product Name */}
+						<div>
+							<label className="block text-sm font-medium text-gray-700 mb-2">
+								Product Name
+							</label>
+							<input
+								type="text"
+								name="name"
+								placeholder="Enter product name"
+								value={formData.name}
+								onChange={handleChange}
+								className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+							/>
+						</div>
+
+						{/* Description */}
+						<div>
+							<label className="block text-sm font-medium text-gray-700 mb-2">
+								Description
+							</label>
+							<textarea
+								name="description"
+								placeholder="Enter product description"
+								value={formData.description}
+								onChange={handleChange}
+								className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+								rows={4}
+							/>
+						</div>
+
+						{/* Price & Stock */}
+						<div className="grid grid-cols-2 gap-4">
+							<div>
+								<label className="block text-sm font-medium text-gray-700 mb-2">
+									Price (₹)
+								</label>
+								<input
+									type="number"
+									name="price"
+									placeholder="0.00"
+									value={formData.price}
+									onChange={handleChange}
+									className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+								/>
+							</div>
+							<div>
+								<label className="block text-sm font-medium text-gray-700 mb-2">
+									Stock
+								</label>
+								<input
+									type="number"
+									name="stock"
+									placeholder="0"
+									value={formData.stock}
+									onChange={handleChange}
+									className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+								/>
+							</div>
+						</div>
+
+						{/* Brand & Category */}
+						<div className="grid grid-cols-2 gap-4">
+							<div>
+								<label className="block text-sm font-medium text-gray-700 mb-2">
+									Brand
+								</label>
+								<input
+									type="text"
+									name="brand"
+									placeholder="Enter brand"
+									value={formData.brand}
+									onChange={handleChange}
+									className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+								/>
+							</div>
+							<div>
+								<label className="block text-sm font-medium text-gray-700 mb-2">
+									Category
+								</label>
+								<input
+									type="text"
+									name="category"
+									placeholder="Enter category"
+									value={formData.category}
+									onChange={handleChange}
+									className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+								/>
+							</div>
+						</div>
+
+						{/* Buttons */}
+						<div className="flex gap-4 pt-4">
+							<button
+								type="submit"
+								disabled={saving}
+								className={`flex-1 py-3 rounded-lg text-white font-medium transition-colors ${
+									saving ? "bg-gray-400" : "bg-slate-800 hover:bg-slate-700"
+								}`}
+							>
+								{saving ? "Saving..." : "Save Changes"}
+							</button>
+
+							<button
+								type="button"
+								onClick={() => navigate("/admin/products")}
+								className="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+							>
+								Cancel
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
-		</PageContainer>
 	);
 };
 

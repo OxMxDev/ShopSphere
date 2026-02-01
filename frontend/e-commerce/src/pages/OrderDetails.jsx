@@ -3,13 +3,17 @@ import { useParams, Link } from "react-router-dom";
 import { getOrderById } from "../api/order.api";
 import Loader from "../components/ui/Loader";
 import { FiPackage, FiMapPin, FiCreditCard, FiTruck, FiArrowLeft } from "react-icons/fi";
+import { useAuth } from "../context/authContext";
 
 const OrderDetails = () => {
 	const { id } = useParams();
+	const { user } = useAuth();
 
 	const [order, setOrder] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+
+	const isAdmin = user?.role === "admin";
 
 	useEffect(() => {
 		getOrderById(id)
@@ -35,13 +39,13 @@ const OrderDetails = () => {
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<div className="max-w-4xl mx-auto px-4 py-8">
-				{/* Back Link */}
+				{/* Back Link - Context aware for admin vs user */}
 				<Link
-					to="/my-orders"
+					to={isAdmin ? "/admin/orders" : "/my-orders"}
 					className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 mb-6"
 				>
 					<FiArrowLeft />
-					Back to My Orders
+					{isAdmin ? "Back to Admin Orders" : "Back to My Orders"}
 				</Link>
 
 				{/* Header */}
