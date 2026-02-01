@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../../context/cartContext";
-import { FiShoppingCart } from "react-icons/fi";
+import { FiShoppingCart, FiUser } from "react-icons/fi";
 
 const Navbar = ({ isAuthenticated, user, onLogout }) => {
 	const { cartItems } = useCart();
@@ -122,6 +122,16 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
 								)}
 							</Link>
 						)}
+						<Link
+							to="/profile"
+							className={`text-sm transition-colors ${
+								isActive("/profile")
+									? "text-white"
+									: "text-gray-300 hover:text-white"
+							}`}
+						>
+							<FiUser className="text-xl" />
+						</Link>
 						<button
 							onClick={onLogout}
 							className="text-sm text-gray-300 hover:text-white transition-colors"

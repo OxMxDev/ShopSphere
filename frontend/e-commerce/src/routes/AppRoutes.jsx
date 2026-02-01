@@ -17,6 +17,7 @@ import Dashboard from "../pages/Dashboard";
 import SignUp from "../pages/SignUp";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword";
+import Profile from "../pages/Profile";
 
 const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 	return (
@@ -138,6 +139,14 @@ const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 				element={
 					<ProtectedRoute>
 						<Wishlist />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path="/profile"
+				element={
+					<ProtectedRoute isAuthenticated={isAuthenticated}>
+						<Profile />
 					</ProtectedRoute>
 				}
 			/>

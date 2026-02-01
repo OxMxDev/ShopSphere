@@ -24,9 +24,16 @@ function App() {
   const handleLoginSuccess = async () => {
     try {
       const res = await getCurrentUser();
-      setUser(res.data.data);
+      const userData = res.data.data;
+      setUser(userData);
       setIsAuthenticated(true);
-      navigate("/admin/dashboard");
+      
+      // Redirect based on user role
+      if (userData.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       console.log("Error fetching user after login", err);
     }
