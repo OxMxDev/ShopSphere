@@ -390,6 +390,12 @@ const resetPassword = asyncHandler(async(req, res) => {
         throw new ApiError(400, "Invalid or expired reset token");
     }
 
+    // Check if new password is same as old password
+    const isSamePassword = await user.isPasswordCorrect(password);
+    if (isSamePassword) {
+        throw new ApiError(400, "New password cannot be the same as your old password");
+    }
+
     // Update password
     user.password = password;
     user.passwordResetToken = undefined;
