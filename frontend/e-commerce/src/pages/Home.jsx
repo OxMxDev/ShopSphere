@@ -39,17 +39,17 @@ const Home = () => {
 
 			{/* Categories Section */}
 			<div className="max-w-6xl mx-auto px-4 py-12">
-				<div className="flex justify-center gap-16">
+				<div className="grid grid-cols-2 sm:grid-cols-4 gap-8 md:gap-16 place-items-center">
 					{categories.map((cat, idx) => (
 						<Link
 							key={idx}
 							to="/products"
-							className="flex flex-col items-center group"
+							className="flex flex-col items-center group w-full"
 						>
-							<div className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center text-4xl mb-3 group-hover:bg-gray-200 transition-colors">
+							<div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gray-100 flex items-center justify-center text-3xl md:text-4xl mb-3 group-hover:bg-gray-200 transition-colors">
 								{cat.image}
 							</div>
-							<span className="text-sm text-gray-700 font-medium">
+							<span className="text-sm text-gray-700 font-medium text-center">
 								{cat.name}
 							</span>
 						</Link>

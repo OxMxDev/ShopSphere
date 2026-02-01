@@ -11,6 +11,7 @@ const Products = () => {
 	// Filter states
 	const [priceRange, setPriceRange] = useState(null);
 	const [selectedCategories, setSelectedCategories] = useState([]);
+	const [showFilters, setShowFilters] = useState(false);
 
 	useEffect(() => {
 		getAllProducts()
@@ -119,76 +120,85 @@ const Products = () => {
 					)}
 				</div>
 
-				<div className="flex gap-8">
+				<div className="flex flex-col md:flex-row gap-8">
 					{/* Filters Sidebar */}
-					<div className="w-48 flex-shrink-0">
-						<h3 className="font-semibold text-gray-900 mb-4">Filters</h3>
-
-						{/* Price Filter */}
-						<div className="mb-6">
-							<h4 className="text-sm font-medium text-gray-700 mb-3">Price</h4>
-							<div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-								<span>₹0</span>
-								<span>₹{currentMaxPrice.toLocaleString()}</span>
-							</div>
-							<input
-								type="range"
-								min={0}
-								max={priceStats.max}
-								value={currentMaxPrice}
-								onChange={(e) => setPriceRange(Number(e.target.value))}
-								className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-slate-800"
-							/>
-							<div className="flex items-center justify-between text-xs text-gray-400 mt-1">
-								<span>Min</span>
-								<span>Max: ₹{priceStats.max.toLocaleString()}</span>
-							</div>
+					<div className="w-full md:w-48 flex-shrink-0">
+						<div className="flex items-center justify-between md:hidden mb-4" onClick={() => setShowFilters(!showFilters)}>
+							<h3 className="font-semibold text-gray-900">Filters</h3>
+							<button className="text-sm text-slate-600 font-medium">
+								{showFilters ? "Hide" : "Show"}
+							</button>
 						</div>
 
-						{/* Category Filter */}
-						<div className="mb-6">
-							<h4 className="text-sm font-medium text-gray-700 mb-3">Category</h4>
-							<div className="space-y-2">
-								{categories.length > 0 ? (
-									categories.map((cat) => (
-										<label key={cat} className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-											<input 
-												type="checkbox" 
-												className="rounded accent-slate-800"
-												checked={selectedCategories.includes(cat)}
-												onChange={() => toggleCategory(cat)}
-											/>
-											{cat}
-										</label>
-									))
-								) : (
-									<p className="text-sm text-gray-400">No categories</p>
-								)}
-							</div>
-						</div>
+						<div className={`md:block ${showFilters ? 'block' : 'hidden'}`}>
+							<h3 className="hidden md:block font-semibold text-gray-900 mb-4">Filters</h3>
 
-						{/* Active Filters */}
-						{selectedCategories.length > 0 && (
-							<div className="mb-4">
-								<h4 className="text-sm font-medium text-gray-700 mb-2">Active</h4>
-								<div className="flex flex-wrap gap-1">
-									{selectedCategories.map(cat => (
-										<span 
-											key={cat}
-											className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full flex items-center gap-1"
-										>
-											{cat}
-											<button 
-												onClick={() => toggleCategory(cat)}
-												className="hover:text-red-500"
-											>
-												×
-											</button>
-										</span>
-									))}
+							{/* Price Filter */}
+							<div className="mb-6">
+								<h4 className="text-sm font-medium text-gray-700 mb-3">Price</h4>
+								<div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+									<span>₹0</span>
+									<span>₹{currentMaxPrice.toLocaleString()}</span>
+								</div>
+								<input
+									type="range"
+									min={0}
+									max={priceStats.max}
+									value={currentMaxPrice}
+									onChange={(e) => setPriceRange(Number(e.target.value))}
+									className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-slate-800"
+								/>
+								<div className="flex items-center justify-between text-xs text-gray-400 mt-1">
+									<span>Min</span>
+									<span>Max: ₹{priceStats.max.toLocaleString()}</span>
 								</div>
 							</div>
-						)}
+
+							{/* Category Filter */}
+							<div className="mb-6">
+								<h4 className="text-sm font-medium text-gray-700 mb-3">Category</h4>
+								<div className="space-y-2">
+									{categories.length > 0 ? (
+										categories.map((cat) => (
+											<label key={cat} className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+												<input 
+													type="checkbox" 
+													className="rounded accent-slate-800"
+													checked={selectedCategories.includes(cat)}
+													onChange={() => toggleCategory(cat)}
+												/>
+												{cat}
+											</label>
+										))
+									) : (
+										<p className="text-sm text-gray-400">No categories</p>
+									)}
+								</div>
+							</div>
+
+							{/* Active Filters */}
+							{selectedCategories.length > 0 && (
+								<div className="mb-4">
+									<h4 className="text-sm font-medium text-gray-700 mb-2">Active</h4>
+									<div className="flex flex-wrap gap-1">
+										{selectedCategories.map(cat => (
+											<span 
+												key={cat}
+												className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full flex items-center gap-1"
+											>
+												{cat}
+												<button 
+													onClick={() => toggleCategory(cat)}
+													className="hover:text-red-500"
+												>
+													×
+												</button>
+											</span>
+										))}
+									</div>
+								</div>
+							)}
+						</div>
 					</div>
 
 					{/* Products Grid */}

@@ -26,7 +26,7 @@ const Login = ({onLoginSuccess}) => {
 	return (
 		<div className="flex">
 			<PageContainer>
-				<div className="w-[500px] h-[600px] bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-4 justify-center  items-center">
+				<div className="w-full max-w-[500px] h-auto min-h-[600px] bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-4 justify-center items-center mx-4">
 					<p className="text-xl font-semibold text-gray-700">E-commerce store</p>
 					<p className="text-2xl font-bold">Login</p>
 					<form
