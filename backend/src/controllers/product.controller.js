@@ -65,11 +65,8 @@ const getAllProducts = asyncHandler(async(req,res)=>{
     const products = await Product.find(query)
         .skip((page-1)*limit)
         .limit(Number(limit))
-        const total = await Product.countDocuments(query)
+    const total = await Product.countDocuments(query)
 
-        if(products.length === 0){
-            throw new ApiError(401,"No products found" )
-        }
     return res
     .status(200)
     .json(new ApiResponse(200,{products,total},"Products fetched successfully"))
