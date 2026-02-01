@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import PageContainer from "../components/layout/PageContainer";
 import { toast } from "react-hot-toast";
+import { forgotPassword } from "../api/auth.api";
 
 const ForgotPassword = () => {
 	const [email, setEmail] = useState("");
@@ -18,10 +19,7 @@ const ForgotPassword = () => {
 
 		try {
 			setLoading(true);
-			// TODO: Implement backend forgot password endpoint
-			// await forgotPassword(email);
-			
-			// For now, show a success message
+			await forgotPassword(email);
 			setSubmitted(true);
 			toast.success("If an account exists with this email, you will receive a password reset link.");
 		} catch (err) {
@@ -47,6 +45,9 @@ const ForgotPassword = () => {
 							<h3 className="text-lg font-semibold text-gray-700">Check your email</h3>
 							<p className="text-gray-500 text-center max-w-sm">
 								If an account exists with <strong>{email}</strong>, you will receive a password reset link shortly.
+							</p>
+							<p className="text-sm text-gray-400">
+								The link will expire in 15 minutes.
 							</p>
 							<Link 
 								to="/login" 

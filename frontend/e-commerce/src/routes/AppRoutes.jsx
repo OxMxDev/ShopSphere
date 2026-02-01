@@ -16,6 +16,7 @@ import CreateProduct from "../pages/admin/CreateProduct";
 import Dashboard from "../pages/Dashboard";
 import SignUp from "../pages/SignUp";
 import ForgotPassword from "../pages/ForgotPassword";
+import ResetPassword from "../pages/ResetPassword";
 
 const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 	return (
@@ -35,6 +36,10 @@ const AppRoutes = ({ onLoginSuccess, isAuthenticated }) => {
 			<Route
 				path="/forgot-password"
 				element={<ForgotPassword />}
+			/>
+			<Route
+				path="/reset-password/:token"
+				element={<ResetPassword />}
 			/>
 			<Route
 				path="/"

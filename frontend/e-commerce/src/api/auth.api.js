@@ -23,6 +23,15 @@ export const registerAdmin = (formData) => {
 export const getCurrentUser = ()=>{
     return axiosInstance.get("/users/current-user");
 }
+
 export const logoutUser = ()=>{
     return axiosInstance.post('/users/logout')
+}
+
+export const forgotPassword = (email) => {
+    return axiosInstance.post('/users/forgot-password', { email });
+}
+
+export const resetPassword = (token, password) => {
+    return axiosInstance.post(`/users/reset-password/${token}`, { password });
 }

@@ -1,6 +1,6 @@
 import {Router} from "express"
 
-import { changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar, registerAdmin } from "../controllers/user.controller.js"
+import { changeCurrentPassword, getCurrentUser, loginUser, logoutUser, refreshAccessToken, registerUser, updateAccountDetails, updateUserAvatar, registerAdmin, forgotPassword, resetPassword } from "../controllers/user.controller.js"
 import { upload } from "../middlewares/multer.middleware.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
 const router = Router()
@@ -24,6 +24,10 @@ router.route("/register-admin").post(
 	]),
 	registerAdmin
 );
+
+// Password reset routes (public)
+router.route('/forgot-password').post(forgotPassword);
+router.route('/reset-password/:token').post(resetPassword);
 
 // secured routes
 router.route('/login').post(loginUser)

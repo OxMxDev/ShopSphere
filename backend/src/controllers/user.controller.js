@@ -320,9 +320,86 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, req.user, "Current User fetched successfully"));
 });
 
-const forgotPassword = asyncHandler(async(req,res)=>{
-    // to be implemented
-})
+const forgotPassword = asyncHandler(async(req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        throw new ApiError(400, "Email is required");
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+
+    // Don't reveal if user exists or not (security best practice)
+    if (!user) {
+        return res
+            .status(200)
+            .json(new ApiResponse(200, {}, "If an account exists with this email, you will receive a password reset link."));
+    }
+
+    // Generate reset token
+    const resetToken = user.generatePasswordResetToken();
+    await user.save({ validateBeforeSave: false });
+
+    // Send email
+    try {
+        const { sendPasswordResetEmail } = await import("../utils/email.js");
+        const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+        
+        await sendPasswordResetEmail(user.email, resetToken, frontendUrl);
+
+        return res
+            .status(200)
+            .json(new ApiResponse(200, {}, "Password reset link sent to your email."));
+    } catch (error) {
+        // If email fails, clear the reset token
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        await user.save({ validateBeforeSave: false });
+
+        console.error("Email sending failed:", error);
+        throw new ApiError(500, "Failed to send password reset email. Please try again later.");
+    }
+});
+
+const resetPassword = asyncHandler(async(req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!token) {
+        throw new ApiError(400, "Reset token is required");
+    }
+
+    if (!password || password.length < 3) {
+        throw new ApiError(400, "Password must be at least 3 characters");
+    }
+
+    // Hash the token from URL to compare with stored hash
+    const crypto = await import("crypto");
+    const hashedToken = crypto.default
+        .createHash("sha256")
+        .update(token)
+        .digest("hex");
+
+    // Find user with valid token that hasn't expired
+    const user = await User.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+        throw new ApiError(400, "Invalid or expired reset token");
+    }
+
+    // Update password
+    user.password = password;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {}, "Password reset successful. You can now login with your new password."));
+});
 
 const registerAdmin = asyncHandler(async(req,res)=>{
     const {name,email,password,address,phone,adminKey} = req.body
@@ -379,6 +456,7 @@ const registerAdmin = asyncHandler(async(req,res)=>{
     .status(201)
     .json(new ApiResponse(201,createdUser,"Admin registered successfully"))
 })
+
 export {
 	registerUser,
 	loginUser,
@@ -388,5 +466,7 @@ export {
 	updateAccountDetails,
 	refreshAccessToken,
 	updateUserAvatar,
-    registerAdmin
+    registerAdmin,
+    forgotPassword,
+    resetPassword
 };
