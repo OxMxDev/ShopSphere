@@ -20,11 +20,14 @@ const orderSchema = new Schema({
         },
     ],
     shippingAddress:{
+        name:String,
         street:String,
         city:String,
         state:String,
+        pincode:String,
         postalCode:String,
-        country:String
+        country:String,
+        phone:String
     },
     paymentMethod:{
         type:String,
