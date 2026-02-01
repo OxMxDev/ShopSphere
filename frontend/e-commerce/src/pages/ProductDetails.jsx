@@ -107,7 +107,7 @@ const handleDeleteReview = async (reviewId) => {
 
 			toast.success("Rating submitted successfully");
 			refreshRatings(); 
-			refreshReviews(); 
+			fetchReviews(); 
 			setUserRating(0);
 			setComment("");
 
