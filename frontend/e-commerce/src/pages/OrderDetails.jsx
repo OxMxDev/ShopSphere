@@ -77,12 +77,17 @@ const OrderDetails = () => {
 
 							<div className="divide-y">
 								{order.orderItems.map((item) => (
-									<div key={item.product._id} className="py-4 flex gap-4">
+									<div key={item._id} className="py-4 flex gap-4">
 										<div className="w-16 h-16 bg-gray-100 rounded-lg flex-shrink-0 flex items-center justify-center">
 											<FiPackage className="text-gray-400" />
 										</div>
 										<div className="flex-1">
-											<h3 className="font-medium text-gray-900">{item.name}</h3>
+											<h3 className="font-medium text-gray-900">
+												{item.name}
+												{!item.product && (
+													<span className="text-xs text-red-500 ml-2">(Deleted)</span>
+												)}
+											</h3>
 											<p className="text-sm text-gray-500">Qty: {item.qty}</p>
 										</div>
 										<p className="font-semibold text-gray-900">
