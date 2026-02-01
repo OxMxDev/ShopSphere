@@ -61,7 +61,7 @@ const SignUp = ({ onLoginSuccess }) => {
 	return (
 		<div className="flex">
 			<PageContainer>
-				<div className="w-full max-w-[500px] min-h-[650px] bg-white rounded-2xl shadow-xl p-6 flex flex-col gap-2 justify-center items-center my-4 mx-4">
+				<div className="w-[90%] md:w-[500px] min-h-[650px] bg-white rounded-2xl shadow-xl p-6 flex flex-col gap-2 justify-center items-center my-4">
 					<p className="text-xl font-semibold text-gray-700">E-commerce store</p>
 					<p className="text-2xl font-bold">Sign Up</p>
 					

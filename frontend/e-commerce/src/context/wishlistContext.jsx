@@ -1,15 +1,21 @@
 import { createContext,useContext,useEffect,useState } from "react";
 import { addToWishlist,removeFromWishlist,getUserWishlist } from "../api/wishlist.api";
+import { useAuth } from "./authContext";
 
 const WishlistContext = createContext();
 
 export const WishlistProvider = ({children})=>{
     const [wishlist,setWishlist] = useState([])
     const [loading,setLoading] = useState(true);
+    const { isAuthenticated } = useAuth();
 
     useEffect(()=>{
-        fetchWishlist();
-    },[])
+        if (isAuthenticated) {
+            fetchWishlist();
+        } else {
+            setWishlist([]);
+        }
+    },[isAuthenticated])
     const fetchWishlist = async()=>{
         try {
             const res = await getUserWishlist();
