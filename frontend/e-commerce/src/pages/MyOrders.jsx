@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { getUserOrders } from "../api/order.api";
-import { useNavigate } from "react-router-dom";
-import Badge from "../components/ui/Badege";
+import { useNavigate, Link } from "react-router-dom";
 import Loader from "../components/ui/Loader";
-import PageContainer from "../components/layout/PageContainer";
+import { FiPackage, FiChevronRight } from "react-icons/fi";
+
 const MyOrders = () => {
 	const [orders, setOrders] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -24,79 +24,97 @@ const MyOrders = () => {
 	}, []);
 
 	if (loading) return <Loader />;
-	if (error) return <p>{error}</p>;
+
+	if (error)
+		return (
+			<div className="min-h-screen bg-white flex items-center justify-center">
+				<p className="text-gray-500">{error}</p>
+			</div>
+		);
 
 	if (orders.length === 0) {
 		return (
-			<div className="text-center py-10">
-				<p className="text-lg font-semibold">No orders yet</p>
-				<p className="text-gray-500 mt-2">
-					Place your first order to see it here.
-				</p>
+			<div className="min-h-screen bg-white flex items-center justify-center">
+				<div className="text-center">
+					<FiPackage className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+					<h2 className="text-xl font-semibold text-gray-800 mb-2">
+						No orders yet
+					</h2>
+					<p className="text-gray-500 mb-6">
+						Place your first order to see it here.
+					</p>
+					<Link
+						to="/products"
+						className="inline-block bg-slate-800 text-white px-6 py-3 rounded-md text-sm font-medium hover:bg-slate-700 transition-colors"
+					>
+						Start Shopping
+					</Link>
+				</div>
 			</div>
 		);
 	}
 
 	return (
-		<PageContainer>
-		<div className="p-6 max-w-4xl mx-auto">
-			<h1 className="text-2xl font-bold mb-4">My Orders</h1>
+		<div className="min-h-screen bg-white">
+			<div className="max-w-4xl mx-auto px-4 py-8">
+				<h1 className="text-2xl font-bold text-gray-900 mb-8">My Orders</h1>
 
-			<table className="w-full">
-				<thead className="bg-gray-100">
-					<tr>
-						<th className="p-2">Order ID</th>
-						<th className="p-2">Date</th>
-						<th className="p-2">Total</th>
-						<th className="p-2">Paid</th>
-						<th className="p-2">Delivered</th>
-						<th className="p-2">Details</th>
-						<th className="p-2">Payment Status</th>
-						<th className="p-2">Delivery Status</th>
-					</tr>
-				</thead>
-
-				<tbody>
+				<div className="space-y-4">
 					{orders.map((order) => (
-						<tr key={order._id} className="text-center">
-							<td className="p-2">{order._id.slice(-6)}</td>
-							<td className="p-2">
-								{new Date(order.createdAt).toLocaleDateString()}
-							</td>
-							<td className="p-2">₹{order.totalPrice}</td>
-							<td className="p-2">{order.isPaid ? "Yes" : "No"}</td>
-							<td className="p-2">
-								{order.isDelievered ? "Yes" : "No"}
-							</td>
+						<div
+							key={order._id}
+							className="border rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
+							onClick={() => navigate(`/order/${order._id}`)}
+						>
+							<div className="flex items-center justify-between mb-4">
+								<div>
+									<p className="text-sm text-gray-500">
+										Order #{order._id.slice(-6).toUpperCase()}
+									</p>
+									<p className="text-sm text-gray-500">
+										{new Date(order.createdAt).toLocaleDateString("en-IN", {
+											day: "numeric",
+											month: "short",
+											year: "numeric",
+										})}
+									</p>
+								</div>
+								<FiChevronRight className="text-gray-400" />
+							</div>
 
-							<td className="p-2">
-								<button
-									onClick={() => navigate(`/order/${order._id}`)}
-									className="text-blue-600 underline"
-								>
-									View
-								</button>
-							</td>
-							<td>
-								{order.isPaid ? (
-									<Badge text="Paid" type="success" />
-								) : (
-									<Badge text="Unpaid" type="warning" />
-								)}
-							</td>
-							<td>
-								{order.isDelievered ? (
-									<Badge text="Delivered" type="success" />
-								) : (
-									<Badge text="Pending" type="info" />
-								)}
-							</td>
-						</tr>
+							<div className="flex items-center justify-between">
+								<div className="flex items-center gap-4">
+									<div className="flex gap-2">
+										{/* Status Badges */}
+										<span
+											className={`px-3 py-1 rounded-full text-xs font-medium ${
+												order.isPaid
+													? "bg-green-100 text-green-700"
+													: "bg-yellow-100 text-yellow-700"
+											}`}
+										>
+											{order.isPaid ? "Paid" : "Unpaid"}
+										</span>
+										<span
+											className={`px-3 py-1 rounded-full text-xs font-medium ${
+												order.isDelievered
+													? "bg-green-100 text-green-700"
+													: "bg-blue-100 text-blue-700"
+											}`}
+										>
+											{order.isDelievered ? "Delivered" : "In Progress"}
+										</span>
+									</div>
+								</div>
+								<p className="font-semibold text-gray-900">
+									₹{order.totalPrice?.toLocaleString()}
+								</p>
+							</div>
+						</div>
 					))}
-				</tbody>
-			</table>
+				</div>
+			</div>
 		</div>
-		</PageContainer>
 	);
 };
 

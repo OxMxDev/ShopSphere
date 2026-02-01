@@ -19,8 +19,8 @@ export const CartProvider = ({ children }) => {
         })
     },[]);
     
-    const addToCart = async(product)=>{
-        await addProductToCart(product._id,1)
+    const addToCart = async(productId)=>{
+        await addProductToCart(productId, 1)
         const res = await getUserCart()
         setCartItems(res.data.data.items)
     }
