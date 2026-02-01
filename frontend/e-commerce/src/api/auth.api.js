@@ -11,6 +11,15 @@ export const registerUser = (formData) => {
 		},
 	});
 };
+
+export const registerAdmin = (formData) => {
+	return axiosInstance.post("/users/register-admin", formData, {
+		headers: {
+			"Content-Type": "multipart/form-data",
+		},
+	});
+};
+
 export const getCurrentUser = ()=>{
     return axiosInstance.get("/users/current-user");
 }
