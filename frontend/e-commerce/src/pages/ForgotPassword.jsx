@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PageContainer from "../components/layout/PageContainer";
 import { toast } from "react-hot-toast";
 import { forgotPassword } from "../api/auth.api";
+import Loader from "../components/ui/Loader";
 
 const ForgotPassword = () => {
 	const [email, setEmail] = useState("");
@@ -82,7 +83,7 @@ const ForgotPassword = () => {
 									loading ? "opacity-50 cursor-not-allowed" : ""
 								}`}
 							>
-								{loading ? "Sending..." : "Send Reset Link"}
+								{loading ? <Loader className="h-6" spinnerSize="h-5 w-5" spinnerColor="border-white" /> : "Send Reset Link"}
 							</button>
 
 							<div className="text-center">

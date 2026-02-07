@@ -270,7 +270,7 @@ const ProductDetails = () => {
 						{/* Reviews List */}
 						<div className="md:col-span-2">
 							{loadingReviews ? (
-								<p className="text-gray-500">Loading reviews...</p>
+								<Loader className="h-20" spinnerSize="h-8 w-8" />
 							) : reviews.length === 0 ? (
 								<p className="text-gray-500">No reviews yet. Be the first to review!</p>
 							) : (

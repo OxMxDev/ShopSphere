@@ -3,6 +3,7 @@ import { registerUser, registerAdmin } from "../api/auth.api";
 import { useNavigate, Link } from "react-router-dom";
 import PageContainer from "../components/layout/PageContainer";
 import { toast } from "react-hot-toast";
+import Loader from "../components/ui/Loader";
 
 const SignUp = ({ onLoginSuccess }) => {
     const [name, setName] = useState("");
@@ -185,7 +186,7 @@ const SignUp = ({ onLoginSuccess }) => {
 							onClick={handleSubmit}
 							disabled={loading}
 						>
-							{loading ? "Registering..." : isAdmin ? "Register as Admin" : "Sign Up"}
+							{loading ? <Loader className="h-6" spinnerSize="h-5 w-5" spinnerColor="border-white" /> : isAdmin ? "Register as Admin" : "Sign Up"}
 						</button>
 						<p className="text-center">
 							Already have an account?{" "}

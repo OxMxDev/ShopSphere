@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { createProduct } from "../../api/product.api";
 import toast from "react-hot-toast";
 import { FiArrowLeft, FiUpload } from "react-icons/fi";
+import Loader from "../../components/ui/Loader";
 
 const CreateProduct = () => {
 	const navigate = useNavigate();
@@ -232,7 +233,7 @@ const CreateProduct = () => {
 									loading ? "bg-gray-400" : "bg-slate-800 hover:bg-slate-700"
 								}`}
 							>
-								{loading ? "Creating..." : "Create Product"}
+								{loading ? <Loader className="h-6" spinnerSize="h-5 w-5" spinnerColor="border-white" /> : "Create Product"}
 							</button>
 
 							<button

@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import PageContainer from "../components/layout/PageContainer";
 import { toast } from "react-hot-toast";
 import { resetPassword } from "../api/auth.api";
+import Loader from "../components/ui/Loader";
 
 const ResetPassword = () => {
 	const { token } = useParams();
@@ -130,7 +131,7 @@ const ResetPassword = () => {
 									loading ? "opacity-50 cursor-not-allowed" : ""
 								}`}
 							>
-								{loading ? "Resetting..." : "Reset Password"}
+								{loading ? <Loader className="h-6" spinnerSize="h-5 w-5" spinnerColor="border-white" /> : "Reset Password"}
 							</button>
 
 							<div className="text-center">

@@ -1,15 +1,12 @@
 import { useAuth } from "../context/authContext";
 import { FiUser, FiMail, FiShield, FiCalendar } from "react-icons/fi";
+import Loader from "../components/ui/Loader";
 
 const Profile = () => {
 	const { user } = useAuth();
 
 	if (!user) {
-		return (
-			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
-				<p className="text-gray-500">Loading...</p>
-			</div>
-		);
+		return <Loader />;
 	}
 
 	return (

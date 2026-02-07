@@ -5,6 +5,7 @@ import Navbar from "./components/layout/Navbar";
 import AppRoutes from "./routes/AppRoutes";
 import { useAuth } from "./context/authContext";
 import { getCurrentUser, logoutUser } from "./api/auth.api";
+import Loader from "./components/ui/Loader";
 
 function App() {
   const { isAuthenticated, loading, user, setUser, setIsAuthenticated } = useAuth();
@@ -40,7 +41,7 @@ function App() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
